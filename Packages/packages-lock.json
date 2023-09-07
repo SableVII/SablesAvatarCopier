@@ -152,7 +152,9 @@
       "version": "file:vrchat.sable7.sables-avatar-copier",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {}
+      "dependencies": {
+        "com.vrchat.avatars": "3.2.3"
+      }
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
