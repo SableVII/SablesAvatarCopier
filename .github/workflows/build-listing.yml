@@ -1,7 +1,7 @@
 name: Build Repo Listing
 
 env:
-  CurrentPackageName: com.vrchat.demo-template
+  CurrentPackageName: vrchat.sable7.sables-avatar-copier
   listPublishDirectory: Website
   pathToCi: ci
   
