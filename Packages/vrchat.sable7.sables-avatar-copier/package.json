@@ -6,14 +6,9 @@
   {
  	"name": "Sable7",
 	"email": "sableseven@hotmail.com",
-	"url": "https://github.com/SableVII/SablesAvatarCopier"
+	"url": "https://github.com/SableVII/SablesTools"
   },
   "unity": "2019.4",
   "description": "Sable's Copier! Copy an avatar and all its components and attachables with ease!",
   "type": "tool",
-  "vpmDependencies": 
-  {
-	"com.vrchat.avatars": "3.2.x"
-  },
-  "url": "https://github.com/SableVII/SablesAvatarCopier/releases/download/v0.1.1/SablesAvatarCopier0.1.1.zip"
 }
