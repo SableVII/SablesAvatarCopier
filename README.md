@@ -1,76 +1,37 @@
-# VPM Package Template
+# Sable's Avatar Copier - Beta v0.1
+Allows quickly copying all aspects of one avatar to another. This includes all components, 'attachables' like in-unity-added Game Objects such as weapons/cookies/prefabs/etc, and component's with hierarchy references such as PhysBoneCollider references. All with the ability to completely customize what will be copied/merged.
 
-Starter for making Packages, including automation for building and publishing them.
+I get it, it's always been an absolute pain to re-add *everything* from one old avatar to a freshly imported avatar everytime you make a small change from Blender. Especially when there are absolutely zero changes needed to be made Unity-side. So, in-order to delay the onset of my inevitable collapse into insanity, I developed an Avatar Copier tool to make all those little changes with just the simple click of a button! Including the ability to see and modify everything that will be copied/merged over before you hit that button for those specific circumstances you may require extra precision.
 
-Once you're all set up, you'll be able to push changes to this repository and have .zip and .unitypackage versions automatically generated, and a listing made which works in the VPM for delivering updates for this package. If you want to make a listing with a variety of packages, check out our [template-package-listing](https://github.com/vrchat-community/template-package-listing) repo.
+## How to Use
+Open the **Avatar Copier** window via `Window -> Sable Tool's Avatar -> Copier`.
 
-## ▶ Getting Started
+Take the Avatar that you wish to copy to in the **Destination** field.
+Take the Avatar that you wish to copy from in the **Source** field.
 
-* Press [![Use This Template](https://user-images.githubusercontent.com/737888/185467681-e5fdb099-d99f-454b-8d9e-0760e5a6e588.png)](https://github.com/vrchat-community/template-package/generate)
-to start a new GitHub project based on this template.
-  * Choose a fitting repository name and description.
-  * Set the visibility to 'Public'. You can also choose 'Private' and change it later.
-  * You don't need to select 'Include all branches.'
-* Clone this repository locally using Git.
-  * If you're unfamiliar with Git and GitHub, [visit GitHub's documentation](https://docs.github.com/en/get-started/quickstart/git-and-github-learning-resources) to learn more.
-* Add the folder to Unity Hub and open it as a Unity Project.
-* After opening the project, wait while the VPM resolver is downloaded and added to your project.
-  * This gives you access to the VPM Package Maker and Package Resolver tools.
+Press the **Create Copy** toggle to optionally create a completely new merged instance and leave the Destination input untouched.
 
-## 🚇 Migrating Assets Package
-Full details at [Converting Assets to a VPM Package](https://vcc.docs.vrchat.com/guides/convert-unitypackage)
+Make adjustments if needed in the *Merge Details* tab.
 
-## Working on Your Package
+Any potential issues will appear as warnings in the *Warning* tab.
 
-* Delete the "Packages/com.vrchat.demo-template" directory or reuse it for your own package.
-  * If you reuse the package, don't forget to rename it!
-* Update the `.gitignore` file in the "Packages" directory to include your package.
-  * For example, change `!com.vrchat.demo-template` to `!com.username.package-name`.
-  * `.gitignore` files normally *exclude* the contents of your "Packages" directory. This `.gitignore` in this template show how to *include* the demo package. You can easily change this out for your own package name.
-* Open the Unity project and work on your package's files in your favorite code editor.
-* When you're ready, commit and push your changes.
-* Once you've set up the automation as described below, you can easily publish new versions.
+Press the *Merge* or *Create Copy* button below the Avatar inputs to Merge
 
-## Setting up the Automation
+## What are Attachables
+Attachables are any Game Object and its hierarchy that are attached to an Avatar's hierarchy. These are determined by comparing the selected Avatar's in-scene hierarchy with that of the Avatar's imported skeleton bones.
 
-You'll need to make a change in [release.yml](.github/workflows/release.yml):
-* Change the `packageName` property on line 10 to include the name of your package, like `packageName: "com.vrchat.demo-template"`
+### An Example:
+If you add a Cookie Game Object with a Mesh and hierarchy to the right hand of the Avatar while in Unity, the Cookie will be considered an Attachable with an attachment point of the avatar's right hand.
 
-You'll also need to make a change to [build-listing.yml](.github/workflows/build-listing.yml):
-* Change `CurrentPackageName` in line 4 from `com.vrchat.demo-template` to your own package name.
+However, if you added the Cookie to the hierarchy inside of Blender and imported the .fbx into Unity with those changes, the cookie will not be considered as an attachable. The Ccokie in that case, would already exist as part of the avatar's imported skeletal hierarchy and therefore cannot be considered an Attachable. 
 
-Finally, go to the "Settings" page for your repo, then choose "Pages", and look for the heading "Build and deployment". Change the "Source" dropdown from "Deploy from a branch" to "GitHub Actions".
-
-That's it!
-Some other notes:
-* We highly recommend you keep the existing folder structure of this template.
-  * The root of the project should be a Unity project.
-  * Your packages should be in the "Packages" directory.
-  * If you deviate from this folder structure, you'll need to update the paths that assume your package is in the "Packages" directory on lines 24, 38, 41 and 57.
-* If you want to store and generate your web files in a folder other than "Website" in the root, you can change the `listPublicDirectory` item [here in build-listing.yml](.github/workflows/build-listing.yml#L17).
-
-## 🎉 Publishing a Release
-
-You can make a release by running the [Build Release](.github/workflows/release.yml) action. The version specified in your `package.json` file will be used to define the version of the release.
-
-## 📃 Rebuilding the Listing
-
-Whenever you make a change to a release - manually publishing it, or manually creating, editing or deleting a release, the [Build Repo Listing](.github/workflows/build-listing.yml) action will make a new index of all the releases available, and publish them as a website hosted fore free on [GitHub Pages](https://pages.github.com/). This listing can be used by the VPM to keep your package up to date, and the generated index page can serve as a simple landing page with info for your package. The URL for your package will be in the format `https://username.github.io/repo-name`.
-
-## 🏠 Customizing the Landing Page
-
-The action which rebuilds the listing also publishes a landing page. The source for this page is in `Website/index.html`. The automation system uses [Scriban](https://github.com/scriban/scriban) to fill in the objects like `{{ this }}` with information from the latest release's manifest, so it will stay up-to-date with the name, id and description that you provide there. You are welcome to modify this page however you want - just use the existing `{{ template.objects }}` to fill in that info wherever you like. The entire contents of your "Website" folder are published to your GitHub Page each time.
-
-## Technical Stuff
-
-You are welcome to make your own changes to the automation process to make it fit your needs, and you can create Pull Requests if you have some changes you think we should adopt. Here's some more info on the included automation:
-
-### Build Release Action
-[release.yml](/.github/workflows/release.yml)
-
-This is a composite action combining a variety of existing GitHub Actions and some shell commands to create both a .zip of your Package and a .unitypackage. It creates a release which is named for the `version` in the `package.json` file found in your target Package, and publishes the zip, the unitypackage and the package.json file to this release.
-
-### Build Repo Listing
-[build-listing.yml](.github/workflows/build-listing.yml)
-
-This is a composite action which builds a vpm-compatible [Repo Listing](https://vcc.docs.vrchat.com/vpm/repos) based on the releases you've created. In order to find all your releases and combine them into a listing, it checks out [another repository](https://github.com/vrchat-community/package-list-action) which has a [Nuke](https://nuke.build/) project which includes the VPM core lib to have access to its types and methods. This project will be expanded to include more functionality in the future - for now, the action just calls its `BuildRepoListing` target.
+## Known Issues
+- Various minor UX and UI Issues.
+- A host of testing still required to squash very specific issues.
+- Lack of Joint and Rigid Body support. (coming soon!)
+- Lack of any information in the 'Help' tab category.
+- Warning Symbols on each Warning in the 'Warning' tab category.
+- Probally lots of speling mistakes.
+- Better output message once avatar is successfully copied/merged.
+- Bug that makes you unable use the rename-shortcut/function on any Game Object in the scene's hierarchy.
+- A more concrete method of determining 'Attachables' that cannot, in extreme-edge cases, be potentially broken.
