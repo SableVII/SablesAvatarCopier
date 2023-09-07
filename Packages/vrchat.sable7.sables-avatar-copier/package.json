@@ -11,4 +11,5 @@
   "unity": "2019.4",
   "description": "Sable's Copier! Copy an avatar and all its components and attachables with ease!",
   "type": "tool",
+  "vrchatVersion": "2022.1.1"
 }
