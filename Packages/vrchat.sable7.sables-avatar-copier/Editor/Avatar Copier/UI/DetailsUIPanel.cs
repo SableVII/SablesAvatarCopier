@@ -1409,7 +1409,7 @@ namespace SablesTools.AvatarCopier.EditorUI
 
                     /// Default value for Smartish Material Copy
                     bool bPrevValue = CopierSettingsHandler.GetInstance().GetBoolDataValue("bDefaultUseSmartMaterialCopy");
-                    CopierSettingsHandler.GetInstance().TrySetDataField("bDefaultUseSmartMaterialCopy", EditorGUILayout.ToggleLeft(new GUIContent("Toggle Smart-ish Copy", "Smart-ish attempts to match materials from the Overriding Renderer by the material's name. This may or may not give better results than sorting by Index."), bPrevValue));
+                    CopierSettingsHandler.GetInstance().TrySetBoolDataField("bDefaultUseSmartMaterialCopy", EditorGUILayout.ToggleLeft(new GUIContent("Toggle Smart-ish Copy", "Smart-ish attempts to match materials from the Overriding Renderer by the material's name. This may or may not give better results than sorting by Index."), bPrevValue));
                     bool bNewValue = CopierSettingsHandler.GetInstance().GetBoolDataValue("bDefaultUseSmartMaterialCopy");
                     if (bPrevValue != bNewValue)
                     {

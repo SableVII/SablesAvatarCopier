@@ -82,7 +82,7 @@ namespace SablesTools.AvatarCopier.EditorUI
             GUILayout.BeginHorizontal();
 
             /// Enabled Attachment Operations in Total.
-            CopierSettingsHandler.GetInstance().TrySetDataField("bPreserveProperties", EditorGUILayout.Toggle(new GUIContent("", "Tooltip."), CopierSettingsHandler.GetInstance().GetBoolDataValue("bPreserveProperties"), EditorStyles.toggle, GUILayout.MaxWidth(15)));
+            CopierSettingsHandler.GetInstance().TrySetBoolDataField("bPreserveProperties", EditorGUILayout.Toggle(new GUIContent("", "Tooltip."), CopierSettingsHandler.GetInstance().GetBoolDataValue("bPreserveProperties"), EditorStyles.toggle, GUILayout.MaxWidth(15)));
 
             /// Attachable Object Text
             string CountText = AvatarCopierUtils.GetXOutOfTotalText((CopierSettingsHandler.GetInstance().GetBoolDataValue("bPreserveProperties") ? PreservedPropertiesCount : 0), PreservedPropertiesCount);
@@ -170,7 +170,7 @@ namespace SablesTools.AvatarCopier.EditorUI
                             {
                                 if (PreservedPropData.bEnabled == false)
                                 {
-                                    CopierSettingsHandler.GetInstance().TrySetDataField("bCopyMaterials", false);
+                                    CopierSettingsHandler.GetInstance().TrySetBoolDataField("bCopyMaterials", false);
                                 }
                             }
                         }

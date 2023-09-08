@@ -50,7 +50,7 @@ namespace SablesTools.AvatarCopier.EditorUI
 
         protected void DrawSettingButtons()
         {
-            CopierSettingsHandler.GetInstance().TrySetDataField("bUnpackPrefab", DrawSettingsToggle(CopierSettingsHandler.GetInstance().GetBoolDataValue("bUnpackPrefab"), "Unpack Prefab",
+            CopierSettingsHandler.GetInstance().TrySetBoolDataField("bUnpackPrefab", DrawSettingsToggle(CopierSettingsHandler.GetInstance().GetBoolDataValue("bUnpackPrefab"), "Unpack Prefab",
                 "Unpacks the Destination Avatar from being a Prefab if not making a copy of the Destination Avatar. !! THIS CANNOT BE UNDONE !!", CopierGUIStyles.GetMainMenuHelpBoxStyle()));
 
             //float PreviousScaleEpsilon = MergerSavedData.GetInstance().ScaleEpsilon;
@@ -60,7 +60,7 @@ namespace SablesTools.AvatarCopier.EditorUI
             //if (PreviousScaleEpsilon != MergerSavedData.GetInstance().ScaleEpsilon)
             //if (MergerSavedData.GetInstance().TrySetProperty("ScaleEpsilon", MergerSavedData.GetInstance().ScaleEpsilon, DrawFloatSettingsToggle(MergerSavedData.GetInstance().ScaleEpsilon, "Scale Epsilon",
             //    "The amount of difference in each element of a GameObject's scale that would create a Scale Operation.", MergerGUIStyles.GetMainMenuHelpBoxStyle())))
-            if (CopierSettingsHandler.GetInstance().TrySetDataField("ScaleEpsilon", DrawFloatSettingsToggle(CopierSettingsHandler.GetInstance().GetFloatDataValue("ScaleEpsilon"), "Scale Epsilon",
+            if (CopierSettingsHandler.GetInstance().TrySetFloatDataField("ScaleEpsilon", DrawFloatSettingsToggle(CopierSettingsHandler.GetInstance().GetFloatDataValue("ScaleEpsilon"), "Scale Epsilon",
                 "The amount of difference in each element of a GameObject's scale that would create a Scale Operation.", CopierGUIStyles.GetMainMenuHelpBoxStyle())))
             {
                 ScaleOperationHandler.GetInstance().Reset();
@@ -111,22 +111,22 @@ namespace SablesTools.AvatarCopier.EditorUI
 
             if (_bShowDefaults)
             {
-                CopierSettingsHandler.GetInstance().TrySetDataField("bDefaultUseAttachableOperations", DrawSettingsToggle(CopierSettingsHandler.GetInstance().GetBoolDataValue("bDefaultUseAttachableOperations"), "Attachable Default Operations",
+                CopierSettingsHandler.GetInstance().TrySetBoolDataField("bDefaultUseAttachableOperations", DrawSettingsToggle(CopierSettingsHandler.GetInstance().GetBoolDataValue("bDefaultUseAttachableOperations"), "Attachable Default Operations",
                     "The default Enabled status of Attachable Operations", CopierGUIStyles.GetMainMenuHelpBoxStyle()));
 
-                CopierSettingsHandler.GetInstance().TrySetDataField("bDefaultUseCompOperations", DrawSettingsToggle(CopierSettingsHandler.GetInstance().GetBoolDataValue("bDefaultUseCompOperations"), "Component Default Operations",
+                CopierSettingsHandler.GetInstance().TrySetBoolDataField("bDefaultUseCompOperations", DrawSettingsToggle(CopierSettingsHandler.GetInstance().GetBoolDataValue("bDefaultUseCompOperations"), "Component Default Operations",
                     "The default Enabled status of Component Operations", CopierGUIStyles.GetMainMenuHelpBoxStyle()));
 
-                CopierSettingsHandler.GetInstance().TrySetDataField("bDefaultUseMaterialOperations", DrawSettingsToggle(CopierSettingsHandler.GetInstance().GetBoolDataValue("bDefaultUseMaterialOperations"), "Material Default Operations",
+                CopierSettingsHandler.GetInstance().TrySetBoolDataField("bDefaultUseMaterialOperations", DrawSettingsToggle(CopierSettingsHandler.GetInstance().GetBoolDataValue("bDefaultUseMaterialOperations"), "Material Default Operations",
                     "The default Enabled status of Material Operations", CopierGUIStyles.GetMainMenuHelpBoxStyle()));
 
-                CopierSettingsHandler.GetInstance().TrySetDataField("bDefaultUseScaleOperations", DrawSettingsToggle(CopierSettingsHandler.GetInstance().GetBoolDataValue("bDefaultUseScaleOperations"), "Scale Default Operations",
+                CopierSettingsHandler.GetInstance().TrySetBoolDataField("bDefaultUseScaleOperations", DrawSettingsToggle(CopierSettingsHandler.GetInstance().GetBoolDataValue("bDefaultUseScaleOperations"), "Scale Default Operations",
                     "The default Enabled status of Scale Operations", CopierGUIStyles.GetMainMenuHelpBoxStyle()));
 
-                CopierSettingsHandler.GetInstance().TrySetDataField("bDefaultUseEnabledDisabledOperations", DrawSettingsToggle(CopierSettingsHandler.GetInstance().GetBoolDataValue("bDefaultUseEnabledDisabledOperations"), "Object Enabled/Disabled Default Operations",
+                CopierSettingsHandler.GetInstance().TrySetBoolDataField("bDefaultUseEnabledDisabledOperations", DrawSettingsToggle(CopierSettingsHandler.GetInstance().GetBoolDataValue("bDefaultUseEnabledDisabledOperations"), "Object Enabled/Disabled Default Operations",
                     "The default Enabled status of Object Enabled/Disabled Default Operations", CopierGUIStyles.GetMainMenuHelpBoxStyle()));
 
-                CopierSettingsHandler.GetInstance().TrySetDataField("bDefaultUseMiscOperations", DrawSettingsToggle(CopierSettingsHandler.GetInstance().GetBoolDataValue("bDefaultUseMiscOperations"), "Misc Default Operations",
+                CopierSettingsHandler.GetInstance().TrySetBoolDataField("bDefaultUseMiscOperations", DrawSettingsToggle(CopierSettingsHandler.GetInstance().GetBoolDataValue("bDefaultUseMiscOperations"), "Misc Default Operations",
                     "The default Enabled status of Misc Operations", CopierGUIStyles.GetMainMenuHelpBoxStyle()));
             }
 
@@ -135,7 +135,7 @@ namespace SablesTools.AvatarCopier.EditorUI
             GUILayout.EndVertical();
 
 
-            CopierSettingsHandler.GetInstance().TrySetDataField("bShowAdvancedSettings", DrawSettingsToggle(CopierSettingsHandler.GetInstance().GetBoolDataValue("bShowAdvancedSettings"), "Show Advanced Settings",
+            CopierSettingsHandler.GetInstance().TrySetBoolDataField("bShowAdvancedSettings", DrawSettingsToggle(CopierSettingsHandler.GetInstance().GetBoolDataValue("bShowAdvancedSettings"), "Show Advanced Settings",
                 "Shows Advanced/Experimental Settings. Only for very specific use cases.", CopierGUIStyles.GetMainMenuHelpBoxStyle()));
         }
 

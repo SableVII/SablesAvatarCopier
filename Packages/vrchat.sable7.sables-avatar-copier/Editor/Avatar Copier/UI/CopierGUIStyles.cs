@@ -28,7 +28,7 @@ namespace SablesTools.AvatarCopier.EditorUI
 
         private static GUIStyle VirtualObjectFieldButtonStyle = null;
 
-        private static GUIStyle SmallWarningIconStyle = null;
+        //private static GUIStyle SmallWarningIconStyle = null;
 
 
         private static GUIStyle MainCategoryFoldoutStyle = null;

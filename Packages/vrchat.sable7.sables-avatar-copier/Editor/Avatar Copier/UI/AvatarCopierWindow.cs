@@ -26,9 +26,9 @@ namespace SablesTools.AvatarCopier.EditorUI
             return _Instance;
         }
 
-        Vector2 ScrollPosition = new Vector2();    
+        //Vector2 ScrollPosition = new Vector2();    
 
-        bool bInputHierarchyUpdated = false;
+        //bool bInputHierarchyUpdated = false;
         bool bIsResizing = false;
         protected readonly float _minMergeTreePanelWidth = 250.0f;
         protected readonly float _minMergeDetailsPanelWidth = 500.0f;
@@ -508,7 +508,7 @@ namespace SablesTools.AvatarCopier.EditorUI
                     {
                         GUI.color = CopierGUIStyles.DisabledGUIColor;
                     }
-                    CopierSettingsHandler.GetInstance().TrySetDataField("bCreateDestinationClone", EditorGUILayout.Toggle(new GUIContent("Create Copy", "If true, then create a new instance instead of copying into the Destination Avatar."), CopierSettingsHandler.GetInstance().GetBoolDataValue("bCreateDestinationClone")));
+                    CopierSettingsHandler.GetInstance().TrySetBoolDataField("bCreateDestinationClone", EditorGUILayout.Toggle(new GUIContent("Create Copy", "If true, then create a new instance instead of copying into the Destination Avatar."), CopierSettingsHandler.GetInstance().GetBoolDataValue("bCreateDestinationClone")));
 
 
                     // Clone Name
