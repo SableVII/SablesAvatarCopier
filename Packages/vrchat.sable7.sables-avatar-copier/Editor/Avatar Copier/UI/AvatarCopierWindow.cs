@@ -113,7 +113,7 @@ namespace SablesTools.AvatarCopier.EditorUI
 
                 // Create the Virtual Tree from the default Destination Objects
 
-                GetHandlersSetFromInputs();
+                GetHandlersContentSetFromInputs();
 
 
                 AttachmentOperationHandler.GetInstance().ApplySavedData();
@@ -440,7 +440,7 @@ namespace SablesTools.AvatarCopier.EditorUI
 
                         //CopierSettingsHandler.GetInstance().RegisterSave();
 
-                        GetHandlersSetFromInputs();
+                        GetHandlersContentSetFromInputs();
 
                         MergeTreeHandler.GetInstance().ResetOrderedVirtualObjects();
                         ComponentOperationHandler.GetInstance().RegisterForRefRefresh();
@@ -664,7 +664,7 @@ namespace SablesTools.AvatarCopier.EditorUI
             return null;
         }
 
-        protected void GetHandlersSetFromInputs()
+        protected void GetHandlersContentSetFromInputs()
         {
             AvatarMatchHandler.GetInstance().CreateMappings();
 

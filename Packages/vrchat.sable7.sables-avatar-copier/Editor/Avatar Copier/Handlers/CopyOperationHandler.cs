@@ -755,31 +755,31 @@ namespace SablesTools.AvatarCopier.Handlers
             }
         }
 
-        public void ChangeCompOpVirtualObjectParent(OverridingComponentOperation overriding, VirtualGameObject newVirtualObjParent, bool bScrollToCompOp = false)
+        public void ChangeCompOpVirtualObjectParent(OverridingComponentOperation overridingCompOp, VirtualGameObject newVirtualObjParent, bool bScrollToCompOp = false)
         {
-            if (newVirtualObjParent == null || overriding == null)
+            if (newVirtualObjParent == null || overridingCompOp == null)
             {
                 return;
             }
 
-            if (newVirtualObjParent == overriding.VirtualGameObjectRef)
+            if (newVirtualObjParent == overridingCompOp.VirtualGameObjectRef)
             {
                 return;
             }
 
             /// 0st Check to see if the CompOp can even fit on VirtualObject
-            if (newVirtualObjParent.CanAcceptOverridingCompOp(overriding) == false)
+            if (newVirtualObjParent.CanAcceptOverridingCompOp(overridingCompOp) == false)
             {
                 return;
             }
 
             /// 1st Clear from lists
             /// Remove from UnusedList if exists
-            if (overriding.IsUnused && overriding.VirtualGameObjectRef == null)
+            if (overridingCompOp.IsUnused && overridingCompOp.VirtualGameObjectRef == null)
             {
                 for (int i = 0; i < UnusedComponentOperations.Count; i++)
                 {
-                    if (UnusedComponentOperations[i] == overriding)
+                    if (UnusedComponentOperations[i] == overridingCompOp)
                     {
                         UnusedComponentOperations.RemoveAt(i);
 
@@ -793,53 +793,61 @@ namespace SablesTools.AvatarCopier.Handlers
                 }
 
                 // Now add newly moved Unused to list
-                OverridingCompOperations.Add(overriding);
+                OverridingCompOperations.Add(overridingCompOp);
             }
 
-            if (overriding.VirtualGameObjectRef != null)
+            if (overridingCompOp.VirtualGameObjectRef != null)
             {
-                VirtualGameObject oldVirtualGameObject = overriding.VirtualGameObjectRef;
+                VirtualGameObject oldVirtualGameObject = overridingCompOp.VirtualGameObjectRef;
 
-                overriding.VirtualGameObjectRef.RemoveOverriding(overriding);
+                overridingCompOp.VirtualGameObjectRef.RemoveOverriding(overridingCompOp);
 
                 // setting to null Also detaches the linked to Pre-Existing Component Operation
-                overriding.SetToReplace(null);
+                overridingCompOp.SetToReplace(null);
 
                 oldVirtualGameObject.RefreshWhatIsOverwritten();
 
                 // Remove from TypeCompOperations List if exists
-                if (TypeCompOpLists.ContainsKey(overriding.ComponentType))
+                if (TypeCompOpLists.ContainsKey(overridingCompOp.ComponentType))
                 {
-                    TypeCompOpLists[overriding.ComponentType].RemoveOverrideable(overriding);
+                    TypeCompOpLists[overridingCompOp.ComponentType].RemoveOverrideable(overridingCompOp);
 
                     // Remove old TypeCompOperationsList if Empty
-                    if (TypeCompOpLists[overriding.ComponentType].GetTotalCompOpCount() == 0)
+                    if (TypeCompOpLists[overridingCompOp.ComponentType].GetTotalCompOpCount() == 0)
                     {
-                        TypeCompOpLists.Remove(overriding.ComponentType);
+                        TypeCompOpLists.Remove(overridingCompOp.ComponentType);
                     }
                 }
             }
 
             /// 2nd set new VirtualObject Parent
-            overriding.SetVirtualGameObject(newVirtualObjParent);
+            overridingCompOp.SetVirtualGameObject(newVirtualObjParent);
 
             /// 3rd add CompOp back into CompOpLists
-            newVirtualObjParent.AddOverriding(overriding);
+            newVirtualObjParent.AddOverriding(overridingCompOp);
 
             newVirtualObjParent.RefreshWhatIsOverwritten();
 
             // Type Lists
-            if (!TypeCompOpLists.ContainsKey(overriding.ComponentType))
+            if (!TypeCompOpLists.ContainsKey(overridingCompOp.ComponentType))
             {
-                TypeCompOpLists.Add(overriding.ComponentType, new TypeComponentOperationList(overriding.ComponentType));
+                TypeCompOpLists.Add(overridingCompOp.ComponentType, new TypeComponentOperationList(overridingCompOp.ComponentType));
 
             }
-            TypeCompOpLists[overriding.ComponentType].AddOverriding(overriding);
+            TypeCompOpLists[overridingCompOp.ComponentType].AddOverriding(overridingCompOp);
 
             // Scroll to changed Comp Op
             if (bScrollToCompOp)
             {
-                EditorUI.CopyDetailsUIPanel.GetInstance().ScrollToCompOperation(overriding);
+                EditorUI.CopyDetailsUIPanel.GetInstance().ScrollToCompOperation(overridingCompOp);
+            }
+
+            // If CompOp is a Renderer, refresh Material Ops
+            if (typeof(Renderer).IsAssignableFrom(overridingCompOp.ComponentType))
+            {
+                MaterialOperationHandler.GetInstance().SavedReset();
+                MaterialOperationHandler.GetInstance().CreateMaterialOperations();
+                MaterialOperationHandler.GetInstance().ApplySavedData();
             }
         }
 
