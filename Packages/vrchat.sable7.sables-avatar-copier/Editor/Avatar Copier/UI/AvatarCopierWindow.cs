@@ -139,13 +139,13 @@ namespace SablesTools.AvatarCopier.EditorUI
 
         virtual public void Awake()
         {
-            CopierSettingsHandler.GetInstance().LoadData();
-            CopierSettingsHandler.GetInstance().EnsurePreservedPropertyData();
+            //CopierSettingsHandler.GetInstance().LoadData();
+            //CopierSettingsHandler.GetInstance().EnsurePreservedPropertyData();
         }
 
         virtual public void OnDestroy()
         {
-            CopierSettingsHandler.GetInstance().RegisterSave();
+            //CopierSettingsHandler.GetInstance().RegisterSave();
         }
 
         // Start is called before the first frame update
@@ -438,7 +438,7 @@ namespace SablesTools.AvatarCopier.EditorUI
                     {
                         FullResetHandlers(false);
 
-                        CopierSettingsHandler.GetInstance().RegisterSave();
+                        //CopierSettingsHandler.GetInstance().RegisterSave();
 
                         GetHandlersSetFromInputs();
 
@@ -612,7 +612,7 @@ namespace SablesTools.AvatarCopier.EditorUI
 
             EditorGUILayout.EndHorizontal();
 
-            CopierSettingsHandler.GetInstance().SaveIfRegistered();
+            //CopierSettingsHandler.GetInstance().SaveIfRegistered();
         }
 
         void FullResetHandlers(bool bResetWarnings)

@@ -162,83 +162,79 @@ namespace SablesTools.AvatarCopier.Handlers
             if (_Instance == null)
             {
                 _Instance = new PreservedPropertyHandler();
-                _Instance.InitializeDefaults();
+                _Instance.Initialize();
             }
 
             return _Instance;
         }
 
-        protected List<PreservedPropertyData> DefaultPreservedParameters = new List<PreservedPropertyData>();
+        //protected List<PreservedPropertyData> DefaultPreservedParameters = new List<PreservedPropertyData>();
+        protected List<PreservedPropertyData> PreserevedProperties = new List<PreservedPropertyData>();
 
         protected Dictionary<System.Type, ComponentPreserveablePropertyInfo> ComponentTypeToPropertiesDictionary = new Dictionary<System.Type, ComponentPreserveablePropertyInfo>();
         protected List<string> AllowedCopyTypeFriendlyNames = new List<string>();
         protected List<System.Type> TypesListed = new List<System.Type>();
-
-        public PreservedPropertyData[] GetDefaultPreservedProperties()
-        {
-            return DefaultPreservedParameters.ToArray();
-        }
-
-        public void SetDefaultPropertyEnabled(int inIndex, bool bInValue)
-        {
-            if (inIndex < 0 || inIndex >= DefaultPreservedParameters.Count)
-            {
-                return;
-            }
-
-            DefaultPreservedParameters[inIndex].bEnabled = bInValue;
-            List<bool> DefaultStatuses = CopierSettingsHandler.GetInstance().GetObjectDataValue("DefaultPreservedPropertiesEnabledStatuses") as List<bool>;
-            DefaultStatuses[inIndex] = bInValue;
-            CopierSettingsHandler.GetInstance().RegisterSave();
-        }
 
         public string[] GetAllowedCopyTypeFriendlyNameArray()
         {
             return AllowedCopyTypeFriendlyNames.ToArray();
         }
 
-        public void InitializeDefaults()
+        public void Initialize()
         {
-            int tempIndex = 0;
+            // Determine all possible properties that can be preserved and record indexes
             foreach (System.Type AllowedType in AvatarCopierUtils.AllowedCopyTypes)
             {
                 ComponentTypeToPropertiesDictionary.Add(AllowedType, new ComponentPreserveablePropertyInfo(AllowedType));
                 AllowedCopyTypeFriendlyNames.Add(AvatarCopierUtils.TypeToFriendlyName(AllowedType));
                 TypesListed.Add(AllowedType);
-
-                tempIndex++;
             }
 
-            DefaultPreservedParameters = new List<PreservedPropertyData>
-            {
-                new PreservedPropertyData(GetIndexFromSystemType(typeof(SkinnedMeshRenderer)), GetIndexFromPropertyName(typeof(SkinnedMeshRenderer), "sharedMesh"), true),
-                new PreservedPropertyData(GetIndexFromSystemType(typeof(SkinnedMeshRenderer)), GetIndexFromPropertyName(typeof(SkinnedMeshRenderer), "bones"), true),
-                new PreservedPropertyData(GetIndexFromSystemType(typeof(SkinnedMeshRenderer)), GetIndexFromPropertyName(typeof(SkinnedMeshRenderer), "rootBone"), true),
-                new PreservedPropertyData(GetIndexFromSystemType(typeof(SkinnedMeshRenderer)), GetIndexFromPropertyName(typeof(SkinnedMeshRenderer), "sharedMaterial"), true),
-                new PreservedPropertyData(GetIndexFromSystemType(typeof(SkinnedMeshRenderer)), GetIndexFromPropertyName(typeof(SkinnedMeshRenderer), "sharedMaterials"), true),
-                //new PreservedPropertyData(GetIndexFromSystemType(typeof(MeshRenderer)), GetIndexFromPropertyName(typeof(MeshRenderer), "sharedMaterial"), true),
-                //new PreservedPropertyData(GetIndexFromSystemType(typeof(MeshRenderer)), GetIndexFromPropertyName(typeof(MeshRenderer), "sharedMaterials"), true),
-                new PreservedPropertyData(GetIndexFromSystemType(typeof(MeshRenderer)), GetIndexFromPropertyName(typeof(MeshRenderer), "sharedMesh"), true),
-                //new PreservedPropertyData(GetIndexFromSystemType(typeof(TrailRenderer)), GetIndexFromPropertyName(typeof(TrailRenderer), "sharedMaterial"), true),
-                //new PreservedPropertyData(GetIndexFromSystemType(typeof(TrailRenderer)), GetIndexFromPropertyName(typeof(TrailRenderer), "sharedMaterials"), true),
-                new PreservedPropertyData(GetIndexFromSystemType(typeof(Animator)), GetIndexFromPropertyName(typeof(Animator), "avatar"), true)
-            };
-
-            //foreach (PreservedPropertyData DefaultPropData in DefaultPreservedParameters)
-            //{
-            //    Debug.Log("Default Preserved Property Data: " + DefaultPropData.GetPreservedComponentType() + "[" + DefaultPropData.GetSelectedPropertyIndex() + "] --  " + DefaultPropData.GetPropertyName() + " [" + DefaultPropData.GetSelectedPropertyIndex() + "]");
-            //}
-
+            AddNewPreservedProperty(typeof(SkinnedMeshRenderer), "sharedMesh", true);
+            AddNewPreservedProperty(typeof(SkinnedMeshRenderer), "bones", true);
+            AddNewPreservedProperty(typeof(SkinnedMeshRenderer), "rootBone", true);
+            //AddNewPreservedProperty(typeof(SkinnedMeshRenderer), "sharedMaterial", true);
+            //AddNewPreservedProperty(typeof(SkinnedMeshRenderer), "sharedMaterials", true);
+            //AddNewPreservedProperty(typeof(MeshRenderer), "sharedMaterial", true);
+            //AddNewPreservedProperty(typeof(MeshRenderer), "sharedMaterials", true);
+            AddNewPreservedProperty(typeof(MeshRenderer), "sharedMesh", true);
+            //AddNewPreservedProperty(typeof(TrailRenderer), "sharedMaterial", true);
+            //AddNewPreservedProperty(typeof(TrailRenderer), "sharedMaterials", true);
+            AddNewPreservedProperty(typeof(Animator), "avatar", true);
         }
 
+        // Adds default Preserved Property
+        public void AddNewPreservedProperty()
+        {
+            PreserevedProperties.Add(new PreservedPropertyData());
+        }
 
-        public string[] GetPropertyArrayOfType(System.Type ComponentType)
+        // Returns True if successfully added
+        public bool AddNewPreservedProperty(System.Type componentType, string propertyName, bool bIsDefault = false)
+        {
+            int typeIndex = GetIndexFromSystemType(componentType);
+            int componentPropertyIndex = GetIndexFromPropertyName(componentType, propertyName);
+
+            if (typeIndex == -1 || componentPropertyIndex == -1)
+            {
+                return false;
+            }
+
+            PreservedPropertyData newPropData = new PreservedPropertyData(typeIndex, componentPropertyIndex, bIsDefault);
+
+            // No need to check for duplicates as duplicates don't matter
+            PreserevedProperties.Add(newPropData);
+
+            return true;
+        }
+
+        public string[] GetPropertyArrayOfType(System.Type componentType)
         {
             string[] failedArray = { "None" };
 
-            if (ComponentType != null && ComponentTypeToPropertiesDictionary.ContainsKey(ComponentType))
+            if (componentType != null && ComponentTypeToPropertiesDictionary.ContainsKey(componentType))
             {
-                return ComponentTypeToPropertiesDictionary[ComponentType].PropertyNames.ToArray();
+                return ComponentTypeToPropertiesDictionary[componentType].PropertyNames.ToArray();
             }
 
             return failedArray;
@@ -274,7 +270,7 @@ namespace SablesTools.AvatarCopier.Handlers
                 }
             }
 
-            return 0;
+            return -1;
         }
 
         public int GetIndexFromPropertyName(System.Type inType, string inName)
@@ -290,34 +286,45 @@ namespace SablesTools.AvatarCopier.Handlers
                 }
             }
 
-            return 0;
+            return -1;
         }
 
-        public bool GetIsPropertyPreserved(System.Type CompType, string PropertyName)
+        public bool GetIsPropertyPreserved(System.Type compType, string propertyName)
         {
-            if (!CopierSettingsHandler.GetInstance().GetBoolDataValue("bPreserveProperties"))
+            foreach (PreservedPropertyData propData in PreserevedProperties)
             {
-                return false;
-            }
-
-            foreach (PreservedPropertyData PropData in DefaultPreservedParameters)
-            {
-                if (PropData.bEnabled && PropData.GetPreservedComponentType() == CompType && PropertyName == PropData.GetPropertyName())
-                {
-                    return true;
-                }
-            }
-
-            List<PreservedPropertyData> PreservedProps = CopierSettingsHandler.GetInstance().GetObjectDataValue("PreservedProperties") as List<PreservedPropertyData>;
-            foreach (PreservedPropertyData PropData in PreservedProps)
-            {
-                if (PropData.bEnabled && PropData.GetPreservedComponentType() == CompType && PropertyName == PropData.GetPropertyName())
+                if (propData.bEnabled && propData.GetPreservedComponentType() == compType && propertyName == propData.GetPropertyName())
                 {
                     return true;
                 }
             }
 
             return false;
+        }
+
+        public int GetEnabledPereservedPropertyCount()
+        {
+            int count = 0;
+
+            foreach (PreservedPropertyData propData in PreserevedProperties)
+            {
+                if (propData.bEnabled)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        public int GetPreservedPropertyCount()
+        {
+            return PreserevedProperties.Count;
+        }
+
+        public PreservedPropertyData GetPreservedPropertyData(int index)
+        {
+            return PreserevedProperties[index];
         }
     }
 }

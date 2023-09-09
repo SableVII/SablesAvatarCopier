@@ -92,7 +92,7 @@ namespace SablesTools.AvatarCopier
             }
 #endif
             // Preserve Properties
-            if (CopierSettingsHandler.GetInstance().GetBoolDataValue("bPreserveProperties"))
+            if (PreservedPropertyHandler.GetInstance().GetEnabledPereservedPropertyCount() > 0)
             {
                 SavePreserveableProperties();
             }
@@ -310,23 +310,25 @@ namespace SablesTools.AvatarCopier
 
                 // Cache Properties/Fields
                 compOp.RunTimePreservedProperties.Clear();
-                List<PreservedPropertyData> CombinedPreservePropertyDataList = new List<PreservedPropertyData>(PreservedPropertyHandler.GetInstance().GetDefaultPreservedProperties());
-                List<PreservedPropertyData> PreservedProps = CopierSettingsHandler.GetInstance().GetObjectDataValue("PreservedProperties") as List<PreservedPropertyData>;
-                CombinedPreservePropertyDataList.AddRange(PreservedProps.ToArray());
+                //List<PreservedPropertyData> combinedPreservePropertyDataList = new List<PreservedPropertyData>(PreservedPropertyHandler.GetInstance().GetDefaultPreservedProperties());
+                //List<PreservedPropertyData> PreservedProps = CopierSettingsHandler.GetInstance().GetObjectDataValue("PreservedProperties") as List<PreservedPropertyData>;
+                //CombinedPreservePropertyDataList.AddRange(PreservedProps.ToArray());
 
-                foreach (PreservedPropertyData PropData in CombinedPreservePropertyDataList)
+                for (int propDataIndex = 0; propDataIndex < PreservedPropertyHandler.GetInstance().GetPreservedPropertyCount(); propDataIndex++)
                 {
-                    if (PropData.GetPreservedComponentType() == compOp.ComponentType && PropData.bEnabled)
+                    PreservedPropertyData propData = PreservedPropertyHandler.GetInstance().GetPreservedPropertyData(propDataIndex);
+
+                    if (propData.GetPreservedComponentType() == compOp.ComponentType && propData.bEnabled)
                     {
-                        System.Reflection.PropertyInfo[] PropertyInfos = compOp.ComponentType.GetProperties();
-                        object PropertyValue = null;
+                        System.Reflection.PropertyInfo[] propertyInfos = compOp.ComponentType.GetProperties();
+                        object propertyValue = null;
 
                         bool bFoundAsProperty = false;
-                        for (int j = 0; j < PropertyInfos.Length; j++)
+                        for (int j = 0; j < propertyInfos.Length; j++)
                         {
-                            if (PropertyInfos[j].Name == PropData.GetPropertyName())
+                            if (propertyInfos[j].Name == propData.GetPropertyName())
                             {
-                                PropertyValue = PropertyInfos[j].GetValue(compOp.OriginComponent);
+                                propertyValue = propertyInfos[j].GetValue(compOp.OriginComponent);
                                 bFoundAsProperty = true;
                                 break;
                             }
@@ -337,22 +339,22 @@ namespace SablesTools.AvatarCopier
                             System.Reflection.FieldInfo[] fields = compOp.ComponentType.GetFields();
                             for (int j = 0; j < fields.Length; j++)
                             {
-                                if (fields[j].Name == PropData.GetPropertyName())
+                                if (fields[j].Name == propData.GetPropertyName())
                                 {
-                                    PropertyValue = fields[j].GetValue(compOp.OriginComponent);
+                                    propertyValue = fields[j].GetValue(compOp.OriginComponent);
                                     break;
                                 }
                             }
                         }
 
-                        if (PropertyValue != null)
+                        if (propertyValue != null)
                         {
                             //if (typeof(Transform).IsAssignableFrom(PropertyValue.GetType()))
                             //{
                             //    Debug.Log("Assigning PropertyValue thats a Transform. Root: " + (PropertyValue as Transform).root.name);
                             //}
 
-                            compOp.RunTimePreservedProperties.Add(new KeyValuePair<PreservedPropertyData, object>(PropData, PropertyValue));
+                            compOp.RunTimePreservedProperties.Add(new KeyValuePair<PreservedPropertyData, object>(propData, propertyValue));
                         }
                     }
                 }
@@ -361,14 +363,9 @@ namespace SablesTools.AvatarCopier
 
         public void ApplyPreserveableProperties()
         {
-            if (!CopierSettingsHandler.GetInstance().GetBoolDataValue("bPreserveProperties"))
+            foreach (Component compKey in ComponentOperationHandler.GetInstance().ComponentOperations.Keys)
             {
-                return;
-            }
-
-            foreach (Component CompKey in ComponentOperationHandler.GetInstance().ComponentOperations.Keys)
-            {
-                PreExistingComponentOperation compOp = ComponentOperationHandler.GetInstance().ComponentOperations[CompKey] as PreExistingComponentOperation;
+                PreExistingComponentOperation compOp = ComponentOperationHandler.GetInstance().ComponentOperations[compKey] as PreExistingComponentOperation;
 
                 if (compOp == null || !compOp.IsFullyEnabled() || compOp.RunTimePreservedProperties.Count <= 0)
                 {
@@ -376,42 +373,42 @@ namespace SablesTools.AvatarCopier
                 }
 
                 // Now apply the Preserved Properties
-                foreach (KeyValuePair<PreservedPropertyData, object> Pair in compOp.RunTimePreservedProperties)
+                foreach (KeyValuePair<PreservedPropertyData, object> pair in compOp.RunTimePreservedProperties)
                 {
                     bool bFoundAsProperty = false;
-                    System.Reflection.PropertyInfo[] PropertyInfos = compOp.ComponentType.GetProperties();
-                    for (int j = 0; j < PropertyInfos.Length; j++)
+                    System.Reflection.PropertyInfo[] propertyInfos = compOp.ComponentType.GetProperties();
+                    for (int j = 0; j < propertyInfos.Length; j++)
                     {
-                        if (PropertyInfos[j].Name == Pair.Key.GetPropertyName())
+                        if (propertyInfos[j].Name == pair.Key.GetPropertyName())
                         {
-                            PropertyInfos[j].SetValue(compOp.RunTimeComponent, Pair.Value);
+                            propertyInfos[j].SetValue(compOp.RunTimeComponent, pair.Value);
                             bFoundAsProperty = true;
 
 
                             // If preserved object is a GameObject or Component, match it into newly created avatar
-                            if (typeof(GameObject).IsAssignableFrom(PropertyInfos[j].PropertyType) || typeof(Transform).IsAssignableFrom(PropertyInfos[j].PropertyType))
+                            if (typeof(GameObject).IsAssignableFrom(propertyInfos[j].PropertyType) || typeof(Transform).IsAssignableFrom(propertyInfos[j].PropertyType))
                             {
                                 GameObject gObj = null;
-                                if (typeof(Transform).IsAssignableFrom(PropertyInfos[j].PropertyType))
+                                if (typeof(Transform).IsAssignableFrom(propertyInfos[j].PropertyType))
                                 {
-                                    Transform AsTransform = PropertyInfos[j].GetValue(compOp.RunTimeComponent) as Transform;
-                                    gObj = AsTransform.gameObject;
+                                    Transform asTransform = propertyInfos[j].GetValue(compOp.RunTimeComponent) as Transform;
+                                    gObj = asTransform.gameObject;
                                 }
                                 else
                                 {
-                                    gObj = PropertyInfos[j].GetValue(compOp.RunTimeComponent) as GameObject;
+                                    gObj = propertyInfos[j].GetValue(compOp.RunTimeComponent) as GameObject;
                                 }
 
                                 VirtualGameObject virtualObj = AvatarMatchHandler.GetInstance().GetVirtualGameObjectFromObject(gObj);
                                 if (virtualObj != null)
                                 {
-                                    if (typeof(Transform).IsAssignableFrom(PropertyInfos[j].PropertyType))
+                                    if (typeof(Transform).IsAssignableFrom(propertyInfos[j].PropertyType))
                                     {
-                                        PropertyInfos[j].SetValue(compOp.RunTimeComponent, virtualObj.RunTimeObject.transform);
+                                        propertyInfos[j].SetValue(compOp.RunTimeComponent, virtualObj.RunTimeObject.transform);
                                     }
                                     else
                                     {
-                                        PropertyInfos[j].SetValue(compOp.RunTimeComponent, virtualObj.RunTimeObject);
+                                        propertyInfos[j].SetValue(compOp.RunTimeComponent, virtualObj.RunTimeObject);
                                     }
                                 }
                             }
@@ -424,9 +421,9 @@ namespace SablesTools.AvatarCopier
                         System.Reflection.FieldInfo[] fields = compOp.ComponentType.GetFields();
                         for (int j = 0; j < fields.Length; j++)
                         {
-                            if (fields[j].IsPublic && fields[j].Name == Pair.Key.GetPropertyName())
+                            if (fields[j].IsPublic && fields[j].Name == pair.Key.GetPropertyName())
                             {
-                                fields[j].SetValue(compOp.RunTimeComponent, Pair.Value);
+                                fields[j].SetValue(compOp.RunTimeComponent, pair.Value);
 
                                 // If preserved object is a GameObject or Component, match it into newly created avatar
                                 if (typeof(GameObject).IsAssignableFrom(fields[j].FieldType) || typeof(Transform).IsAssignableFrom(fields[j].FieldType))

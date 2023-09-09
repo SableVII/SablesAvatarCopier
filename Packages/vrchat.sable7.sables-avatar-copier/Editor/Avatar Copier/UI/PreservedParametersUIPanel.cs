@@ -54,48 +54,51 @@ namespace SablesTools.AvatarCopier.EditorUI
 
         public void DrawPreservedProperties()
         {
-            List<PreservedPropertyData> CombinedList = new List<PreservedPropertyData>(PreservedPropertyHandler.GetInstance().GetDefaultPreservedProperties());
-            List<PreservedPropertyData> PreservedProps = CopierSettingsHandler.GetInstance().GetObjectDataValue("PreservedProperties") as List<PreservedPropertyData>;
-            CombinedList.AddRange(PreservedProps.ToArray());
+            //List<PreservedPropertyData> combinedList = new List<PreservedPropertyData>(PreservedPropertyHandler.GetInstance().GetDefaultPreservedProperties());
+            //List<PreservedPropertyData> PreservedProps = CopierSettingsHandler.GetInstance().GetObjectDataValue("PreservedProperties") as List<PreservedPropertyData>;
+            //CombinedList.AddRange(PreservedProps.ToArray());
 
-            int PreservedPropertiesCount = CombinedList.Count;
-            int PreservedPropertiesEnabledCount = 0;
-            foreach (PreservedPropertyData PreservedPropData in CombinedList)
-            {
-                if (PreservedPropData.bEnabled)
-                {
-                    PreservedPropertiesEnabledCount++;
-                }
-            }//
+            int preservedPropertiesCount = PreservedPropertyHandler.GetInstance().GetPreservedPropertyCount();
+            int preservedPropertiesEnabledCount = PreservedPropertyHandler.GetInstance().GetEnabledPereservedPropertyCount();
 
-            Color OriginalBackgroundColor = GUI.backgroundColor;
+            Color originalBackgroundColor = GUI.backgroundColor;
             Color OriginalColor = GUI.color;
-            if (!CopierSettingsHandler.GetInstance().GetBoolDataValue("bPreserveProperties"))
+            if (PreservedPropertyHandler.GetInstance().GetEnabledPereservedPropertyCount() == 0)
             {
                 GUI.backgroundColor = CopierGUIStyles.DisabledHelpBoxColor;
                 GUI.color = CopierGUIStyles.DisabledLabelColor;
             }
 
             GUILayout.BeginVertical("", CopierGUIStyles.GetMainMenuHelpBoxStyle());
-            GUI.backgroundColor = OriginalBackgroundColor; // To not get too dark on Background colors
+            GUI.backgroundColor = originalBackgroundColor; // To not get too dark on Background colors
 
             GUILayout.BeginHorizontal();
 
             /// Enabled Attachment Operations in Total.
-            CopierSettingsHandler.GetInstance().TrySetBoolDataField("bPreserveProperties", EditorGUILayout.Toggle(new GUIContent("", "Tooltip."), CopierSettingsHandler.GetInstance().GetBoolDataValue("bPreserveProperties"), EditorStyles.toggle, GUILayout.MaxWidth(15)));
+            //CopierSettingsHandler.GetInstance().TrySetBoolDataField("bPreserveProperties", EditorGUILayout.Toggle(new GUIContent("", "Tooltip."), CopierSettingsHandler.GetInstance().GetBoolDataValue("bPreserveProperties"), EditorStyles.toggle, GUILayout.MaxWidth(15)));
+
+            // Preserved Property Toggle
+            bool bPrevValue = preservedPropertiesEnabledCount > 0;
+            if (EditorGUILayout.Toggle("", bPrevValue, GUILayout.MaxWidth(15)) != bPrevValue)
+            {
+                for (int i = 0; i < preservedPropertiesCount; i++)
+                {
+                    PreservedPropertyHandler.GetInstance().GetPreservedPropertyData(i).bEnabled = preservedPropertiesEnabledCount == 0;
+                }
+            }
 
             /// Attachable Object Text
-            string CountText = AvatarCopierUtils.GetXOutOfTotalText((CopierSettingsHandler.GetInstance().GetBoolDataValue("bPreserveProperties") ? PreservedPropertiesCount : 0), PreservedPropertiesCount);
+            string countText = AvatarCopierUtils.GetXOutOfTotalText(preservedPropertiesEnabledCount, preservedPropertiesCount);
 
-            string LabelText = "Preserved Properties/Fields  <color=" + CopierGUIStyles.LightTextHexColor + ">(" + CountText + ")</color>";
+            string labelText = "Preserved Properties/Fields  <color=" + CopierGUIStyles.LightTextHexColor + ">(" + countText + ")</color>";
 
-            if (PreservedPropertiesCount == 0)
+            if (preservedPropertiesCount == 0)
             {
-                LabelText = "<color=" + CopierGUIStyles.LightTextHexColor + ">" + LabelText + "</color>";
+                labelText = "<color=" + CopierGUIStyles.LightTextHexColor + ">" + labelText + "</color>";
             }
 
             //bShowPreservedParameters = MergerGUIStyles.ClickableLabelFoldout(bShowPreservedParameters, new GUIContent(LabelText, TooltipText), MergerGUIStyles.GetMainCategoryFoldoutStyle());
-            bShowPreservedParameters = EditorGUILayout.Foldout(bShowPreservedParameters, new GUIContent(LabelText), CopierGUIStyles.GetMainCategoryFoldoutStyle());
+            bShowPreservedParameters = EditorGUILayout.Foldout(bShowPreservedParameters, new GUIContent(labelText), CopierGUIStyles.GetMainCategoryFoldoutStyle());
 
 
             //GUILayout.FlexibleSpace();
@@ -105,17 +108,20 @@ namespace SablesTools.AvatarCopier.EditorUI
             if (bShowPreservedParameters)
             {
                 // Message
-                EditorGUILayout.HelpBox("This is an in-Alpha feature and not totally finished. See Help Tab for more information.", MessageType.Info);
+                //EditorGUILayout.HelpBox("This is an in-Alpha feature and not totally finished. See Help Tab for more information.", MessageType.Info);
 
                 // Add Preserved Parameter Button
                 GUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("");
                 GUILayout.FlexibleSpace();
-                if (GUILayout.Button(new GUIContent("Add Preserved Property/Field", "Tooltip")))
+                GUI.enabled = false;
+                if (GUILayout.Button(new GUIContent("Add Preserved Property/Field", "Feature Disabled ATM")))
                 {
                     //MergerSettingsHandler.GetInstance().PreservedProperties.Add(new PreservedPropertyData());
-                    PreservedProps.Add(new PreservedPropertyData());
+                    //PreservedProps.Add(new PreservedPropertyData());
+                    PreservedPropertyHandler.GetInstance().AddNewPreservedProperty();
                 }
+                GUI.enabled = true;
                 GUILayout.FlexibleSpace();
                 EditorGUILayout.LabelField("");
                 GUILayout.EndHorizontal();
@@ -124,13 +130,13 @@ namespace SablesTools.AvatarCopier.EditorUI
 
                 // Show Preserved Paramemters
                 // Go in reverse order as it looks better
-                for (int PreservedPropIndex = CombinedList.Count-1; PreservedPropIndex >= 0; PreservedPropIndex--)
+                for (int preservedPropIndex = preservedPropertiesCount-1; preservedPropIndex >= 0; preservedPropIndex--)
                 {
-                    PreservedPropertyData PreservedPropData = CombinedList[PreservedPropIndex];
+                    PreservedPropertyData preservedPropData =  PreservedPropertyHandler.GetInstance().GetPreservedPropertyData(preservedPropIndex);
 
                     Color oBGColor = GUI.backgroundColor;
                     Color oColor = GUI.color;
-                    if (!PreservedPropData.bEnabled)
+                    if (!preservedPropData.bEnabled)
                     {
                         GUI.backgroundColor = CopierGUIStyles.DisabledHelpBoxColor;
                         GUI.color = CopierGUIStyles.DisabledLabelColor;
@@ -142,33 +148,33 @@ namespace SablesTools.AvatarCopier.EditorUI
 
                     EditorGUILayout.BeginHorizontal();
 
-                    bool OriginalEnabled = PreservedPropData.bEnabled;
-                    PreservedPropData.bEnabled = EditorGUILayout.ToggleLeft("", PreservedPropData.bEnabled, GUILayout.MaxWidth(15));
+                    bool originalEnabled = preservedPropData.bEnabled;
+                    preservedPropData.bEnabled = EditorGUILayout.ToggleLeft("", preservedPropData.bEnabled, GUILayout.MaxWidth(15));
 
                     /// Type Popup List
-                    if (PreservedPropData.GetIsDefault() && PreservedPropData.bEnabled != OriginalEnabled)
-                    {
-                        int IndexOfDefaultProp = 0;
+                    //if (preservedPropData.GetIsDefault() && preservedPropData.bEnabled != originalEnabled)
+                    //{
+                    //    int IndexOfDefaultProp = 0;
 
-                        for (int i = 0; i < PreservedPropertyHandler.GetInstance().GetDefaultPreservedProperties().Length; i++)
-                        {
-                            if (PreservedPropData == PreservedPropertyHandler.GetInstance().GetDefaultPreservedProperties()[i])
-                            {
-                                IndexOfDefaultProp = i;
-                            }
-                        }
+                    //    for (int i = 0; i < PreservedPropertyHandler.GetInstance().GetDefaultPreservedProperties().Length; i++)
+                    //    {
+                    //        if (preservedPropData == PreservedPropertyHandler.GetInstance().GetDefaultPreservedProperties()[i])
+                    //        {
+                    //            IndexOfDefaultProp = i;
+                    //        }
+                    //    }
 
-                        PreservedPropertyHandler.GetInstance().SetDefaultPropertyEnabled(IndexOfDefaultProp, PreservedPropData.bEnabled);
-                    }
+                    //    PreservedPropertyHandler.GetInstance().SetDefaultPropertyEnabled(IndexOfDefaultProp, preservedPropData.bEnabled);
+                    //}
 
                     // If this is a Renderer preserved prop and a Shared Materials is turned off, don't allow Materials to be copied
-                    if (PreservedPropData.bEnabled != OriginalEnabled)
+                    if (preservedPropData.bEnabled != originalEnabled)
                     {
-                        if (typeof(Renderer).IsAssignableFrom(PreservedPropData.GetPreservedComponentType()))
+                        if (typeof(Renderer).IsAssignableFrom(preservedPropData.GetPreservedComponentType()))
                         {
-                            if (PreservedPropData.GetPropertyName() == "sharedMaterial" || PreservedPropData.GetPropertyName() == "sharedMaterials")
+                            if (preservedPropData.GetPropertyName() == "sharedMaterial" || preservedPropData.GetPropertyName() == "sharedMaterials")
                             {
-                                if (PreservedPropData.bEnabled == false)
+                                if (preservedPropData.bEnabled == false)
                                 {
                                     CopierSettingsHandler.GetInstance().TrySetBoolDataField("bCopyMaterials", false);
                                 }
@@ -177,16 +183,16 @@ namespace SablesTools.AvatarCopier.EditorUI
                     }
 
                     // Don't allow edits to defaults
-                    if (PreservedPropData.GetIsDefault())
+                    if (preservedPropData.GetIsDefault())
                     {
                         GUI.enabled = false;
                     }
 
-                    int OriginalTypeIndex = PreservedPropData.GetSelectedTypeIndex();
-                    int InputTypeIndex = EditorGUILayout.Popup(PreservedPropData.GetSelectedTypeIndex(), AllowedCopyTypeFriendlyNames);
-                    if (OriginalTypeIndex != InputTypeIndex)
+                    int originalTypeIndex = preservedPropData.GetSelectedTypeIndex();
+                    int inputTypeIndex = EditorGUILayout.Popup(preservedPropData.GetSelectedTypeIndex(), AllowedCopyTypeFriendlyNames);
+                    if (originalTypeIndex != inputTypeIndex)
                     {
-                        PreservedPropData.SetSelectedTypeIndex(InputTypeIndex);
+                        preservedPropData.SetSelectedTypeIndex(inputTypeIndex);
                         //PreservedParamater. = TypesListed[OriginalTypeIndex];
                         //PreservedParamater.SelectedPropertyIndex = 0;
                     }
@@ -194,13 +200,13 @@ namespace SablesTools.AvatarCopier.EditorUI
                     GUILayout.FlexibleSpace();
 
                     /// Property Popup List
-                    if (PreservedPropData.GetPreservedComponentType() != null)
+                    if (preservedPropData.GetPreservedComponentType() != null)
                     {
-                        int OriginalPropertyTypeIndex = PreservedPropData.GetSelectedPropertyIndex();
-                        int InputPropertyTypeIndex = EditorGUILayout.Popup(PreservedPropData.GetSelectedPropertyIndex(), PreservedPropertyHandler.GetInstance().GetPropertyArrayOfType(PreservedPropData.GetPreservedComponentType()));
-                        if (OriginalPropertyTypeIndex != InputPropertyTypeIndex)
+                        int originalPropertyTypeIndex = preservedPropData.GetSelectedPropertyIndex();
+                        int inputPropertyTypeIndex = EditorGUILayout.Popup(preservedPropData.GetSelectedPropertyIndex(), PreservedPropertyHandler.GetInstance().GetPropertyArrayOfType(preservedPropData.GetPreservedComponentType()));
+                        if (originalPropertyTypeIndex != inputPropertyTypeIndex)
                         {
-                            PreservedPropData.SetSelectedPropertyIndex(InputPropertyTypeIndex);
+                            preservedPropData.SetSelectedPropertyIndex(inputPropertyTypeIndex);
                         }
                     }
 
@@ -212,20 +218,20 @@ namespace SablesTools.AvatarCopier.EditorUI
                     GUILayout.FlexibleSpace();
 
                     // Default label (if Default)
-                    if (PreservedPropData.GetIsDefault())
+                    if (preservedPropData.GetIsDefault())
                     {
                         GUILayout.Label(new GUIContent("<color=" + CopierGUIStyles.LightTextHexColor + ">Default</color>", "Tooltip"), CopierGUIStyles.GetLabelRichText());
                         GUILayout.FlexibleSpace();
                     }
 
                     // Remove Button
-                    if (GUILayout.Button(new GUIContent("Remove", "Tooltip"), GUILayout.Width(92)))
-                    {
-                        for (int i = 0; i < PreservedProps.Count; i++)
-                        {
-                            PreservedProps.Remove(PreservedPropData);
-                        }
-                    }
+                    //if (GUILayout.Button(new GUIContent("Remove", "Tooltip"), GUILayout.Width(92)))
+                    //{
+                    //    for (int i = 0; i < PreservedProps.Count; i++)
+                    //    {
+                    //        PreservedProps.Remove(preservedPropData);
+                    //    }
+                    //}
                     EditorGUILayout.EndHorizontal();
 
                     GUI.enabled = true;
