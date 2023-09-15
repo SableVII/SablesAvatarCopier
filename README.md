@@ -3,10 +3,6 @@ Allows quickly copying all aspects of one avatar to another. This includes all c
 
 I get it, it's always been an absolute pain to re-add *everything* from one old avatar to a freshly imported avatar everytime you make a small change from Blender. Especially when there are absolutely zero changes needed to be made Unity-side. So, in-order to delay the onset of my inevitable collapse into insanity, I developed an Avatar Copier tool to make all those little changes with just the simple click of a button! Including the ability to see and modify everything that will be copied/merged over before you hit that button for those specific circumstances you may require extra precision.
 
-![AvatarCopier2](https://github.com/SableVII/SablesAvatarCopier/assets/143745362/9d96cf6e-78c9-4326-9bb6-09202b499263)
-![AvatarCopier1](https://github.com/SableVII/SablesAvatarCopier/assets/143745362/a1918d09-1fb2-4e53-b551-ac87801f1e16)
-![AvatarCopier3](https://github.com/SableVII/SablesAvatarCopier/assets/143745362/e0cbab21-e5f1-41f5-a465-c7214c8c3d16)
-
 ## How to Use
 Open the **Avatar Copier** window via `Window -> Sable Tool's Avatar -> Copier`.
 
@@ -39,3 +35,8 @@ However, if you added the Cookie to the hierarchy inside of Blender and imported
 - Better output message once avatar is successfully copied/merged.
 - Bug that makes you unable use the rename-shortcut/function on any Game Object in the scene's hierarchy.
 - A more concrete method of determining 'Attachables' that cannot, in extreme-edge cases, be potentially broken.
+
+## Media
+![AvatarCopier2](https://github.com/SableVII/SablesAvatarCopier/assets/143745362/9d96cf6e-78c9-4326-9bb6-09202b499263)
+![AvatarCopier1](https://github.com/SableVII/SablesAvatarCopier/assets/143745362/a1918d09-1fb2-4e53-b551-ac87801f1e16)
+![AvatarCopier3](https://github.com/SableVII/SablesAvatarCopier/assets/143745362/e0cbab21-e5f1-41f5-a465-c7214c8c3d16)
