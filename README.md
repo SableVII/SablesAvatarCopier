@@ -17,6 +17,11 @@ Any potential issues will appear as warnings in the *Warning* tab.
 
 Press the *Merge* or *Create Copy* button below the Avatar inputs to Merge
 
+![AvatarCopier2](https://github.com/SableVII/SablesAvatarCopier/assets/143745362/9d96cf6e-78c9-4326-9bb6-09202b499263)
+![AvatarCopier1](https://github.com/SableVII/SablesAvatarCopier/assets/143745362/a1918d09-1fb2-4e53-b551-ac87801f1e16)
+![AvatarCopier3](https://github.com/SableVII/SablesAvatarCopier/assets/143745362/e0cbab21-e5f1-41f5-a465-c7214c8c3d16)
+
+
 ## What are Attachables
 Attachables are any Game Object and its hierarchy that are attached to an Avatar's hierarchy. These are determined by comparing the selected Avatar's in-scene hierarchy with that of the Avatar's imported skeleton bones.
 
