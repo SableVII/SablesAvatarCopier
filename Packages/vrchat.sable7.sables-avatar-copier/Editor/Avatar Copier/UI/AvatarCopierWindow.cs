@@ -366,33 +366,33 @@ namespace SablesTools.AvatarCopier.EditorUI
 
 
                 // Print Properties Button  // For Debuggin use only!
-                /*GUILayout.Space(7);
-                EditorGUILayout.BeginHorizontal();
-                GUILayout.FlexibleSpace();
-                if (GUILayout.Button("Print Properties"))
-                {
-                    System.Type CheckType = typeof(VRC.SDK3.Avatars.Components.VRCAvatarDescriptor);
-                    ComponentPreserveablePropertyInfo PropInfo = PreservedPropertyHandler.GetInstance().GetComponentPropertyInfo(CheckType);
+                //GUILayout.Space(7);
+                //EditorGUILayout.BeginHorizontal();
+                //GUILayout.FlexibleSpace();
+                //if (GUILayout.Button("Print Properties"))
+                //{
+                //    System.Type CheckType = typeof(Animator);
+                //    ComponentPreserveablePropertyInfo PropInfo = PreservedPropertyHandler.GetInstance().GetComponentPropertyInfo(CheckType);
 
-                    Debug.Log(MergerGlobals.TypeToFriendlyName(PropInfo.ComponentType) + " [" + PreservedPropertyHandler.GetInstance().GetIndexFromSystemType(PropInfo.ComponentType) + "]: ");
+                //    Debug.Log(AvatarCopierUtils.TypeToFriendlyName(PropInfo.ComponentType) + " [" + PreservedPropertyHandler.GetInstance().GetIndexFromSystemType(PropInfo.ComponentType) + "]: ");
 
-                    for (int i = 0; i < PropInfo.PropertyNames.Count; i++)
-                    {
-                        Debug.Log(" ~ Property[" + i + "]: " + PropInfo.PropertyNames[i] + "  Property Type: " + PropInfo.PropertyTypes[i]);
-                    }
+                //    for (int i = 0; i < PropInfo.PropertyNames.Count; i++)
+                //    {
+                //        Debug.Log(" ~ Property[" + i + "]: " + PropInfo.PropertyNames[i] + "  Property Type: " + PropInfo.PropertyTypes[i]);
+                //    }
 
-                    System.Reflection.FieldInfo[] fields = CheckType.GetFields();
-                    for (int i = 0; i < fields.Length; i++)
-                    {
-                        if (fields[i].IsPublic)
-                        {
-                            Debug.Log(" ~ Field[" + i + "]: " + fields[i].Name);
-                        }
-                    }
+                //    System.Reflection.FieldInfo[] fields = CheckType.GetFields();
+                //    for (int i = 0; i < fields.Length; i++)
+                //    {
+                //        if (fields[i].IsPublic)
+                //        {
+                //            Debug.Log(" ~ Field[" + i + "]: " + fields[i].Name);
+                //        }
+                //    }
 
-                }
-                GUILayout.FlexibleSpace();
-                EditorGUILayout.EndHorizontal();*/
+                //}
+                //GUILayout.FlexibleSpace();
+                //EditorGUILayout.EndHorizontal();
 
                 /// Help Box
                 if (WarningHandler.GetInstance().HasErrors())

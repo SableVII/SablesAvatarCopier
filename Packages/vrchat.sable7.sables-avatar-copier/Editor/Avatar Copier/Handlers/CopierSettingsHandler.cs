@@ -204,7 +204,7 @@ namespace SablesTools.AvatarCopier.Handlers
 
         public bool GetBoolDataValue(string dataFieldName)
         {
-            if (UnityEditor.EditorPrefs.HasKey(dataFieldName))
+            if (UnityEditor.EditorPrefs.HasKey(_PackageID + "." + dataFieldName))
             {
                 return EditorPrefs.GetBool(_PackageID + "." + dataFieldName);
             }
@@ -214,7 +214,7 @@ namespace SablesTools.AvatarCopier.Handlers
 
         public int GetIntDataValue(string dataFieldName)
         {
-            if (UnityEditor.EditorPrefs.HasKey(dataFieldName))
+            if (UnityEditor.EditorPrefs.HasKey(_PackageID + "." + dataFieldName))
             {
                 return EditorPrefs.GetInt(_PackageID + "." + dataFieldName);
             }
@@ -224,7 +224,7 @@ namespace SablesTools.AvatarCopier.Handlers
 
         public float GetFloatDataValue(string dataFieldName)
         {
-            if (UnityEditor.EditorPrefs.HasKey(dataFieldName))
+            if (UnityEditor.EditorPrefs.HasKey(_PackageID + "." + dataFieldName))
             {
                 return EditorPrefs.GetFloat(_PackageID + "." + dataFieldName);
             }
@@ -234,7 +234,7 @@ namespace SablesTools.AvatarCopier.Handlers
 
         public string GetStringDataValue(string dataFieldName)
         {
-            if (UnityEditor.EditorPrefs.HasKey(dataFieldName))
+            if (UnityEditor.EditorPrefs.HasKey(_PackageID + "." + dataFieldName))
             {
                 return EditorPrefs.GetString(_PackageID + "." + dataFieldName);
             }

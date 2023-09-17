@@ -101,9 +101,6 @@ namespace SablesTools.AvatarCopier
 
             MakeVirtualTreeReal();
 
-            //// Apply Scale Operations
-            ApplyScaleOperations();
-
             ApplyMiscOperationsPreAttachablesAttachment();
 
             //// Attach Attachables
@@ -118,6 +115,9 @@ namespace SablesTools.AvatarCopier
             ApplyEnabledDisabledOperations();
 
             ApplyMiscOperationsPostAttachableAttachment();
+
+            //// Apply Scale Operations
+            ApplyScaleOperations();
 
             VerySpecificPostCompOperations();
         }

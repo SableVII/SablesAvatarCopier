@@ -286,7 +286,7 @@ namespace SablesTools.AvatarCopier.Operations
                 return false;
             }
 
-            return base.IsFullyEnabled();
+            return bUserSetEnabled;
         }
 
         public void ApplyMaterialOperation()

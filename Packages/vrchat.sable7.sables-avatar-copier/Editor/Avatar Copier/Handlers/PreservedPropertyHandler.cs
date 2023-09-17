@@ -193,13 +193,13 @@ namespace SablesTools.AvatarCopier.Handlers
             AddNewPreservedProperty(typeof(SkinnedMeshRenderer), "sharedMesh", true);
             AddNewPreservedProperty(typeof(SkinnedMeshRenderer), "bones", true);
             AddNewPreservedProperty(typeof(SkinnedMeshRenderer), "rootBone", true);
-            //AddNewPreservedProperty(typeof(SkinnedMeshRenderer), "sharedMaterial", true);
-            //AddNewPreservedProperty(typeof(SkinnedMeshRenderer), "sharedMaterials", true);
-            //AddNewPreservedProperty(typeof(MeshRenderer), "sharedMaterial", true);
-            //AddNewPreservedProperty(typeof(MeshRenderer), "sharedMaterials", true);
-            AddNewPreservedProperty(typeof(MeshRenderer), "sharedMesh", true);
-            //AddNewPreservedProperty(typeof(TrailRenderer), "sharedMaterial", true);
-            //AddNewPreservedProperty(typeof(TrailRenderer), "sharedMaterials", true);
+            AddNewPreservedProperty(typeof(SkinnedMeshRenderer), "sharedMaterial", true);
+            AddNewPreservedProperty(typeof(SkinnedMeshRenderer), "sharedMaterials", true);
+            AddNewPreservedProperty(typeof(MeshRenderer), "sharedMaterial", true);
+            AddNewPreservedProperty(typeof(MeshRenderer), "sharedMaterials", true);
+            //AddNewPreservedProperty(typeof(MeshRenderer), "sharedMesh", true);
+            AddNewPreservedProperty(typeof(TrailRenderer), "sharedMaterial", true);
+            AddNewPreservedProperty(typeof(TrailRenderer), "sharedMaterials", true);
             AddNewPreservedProperty(typeof(Animator), "avatar", true);
         }
 
