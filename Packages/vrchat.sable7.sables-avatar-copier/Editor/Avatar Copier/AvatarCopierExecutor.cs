@@ -842,6 +842,11 @@ namespace SablesTools.AvatarCopier
         {
             if (MiscOperationHandler.GetInstance().AvatarIDOp != null)
             {
+                if (MiscOperationHandler.GetInstance().AvatarIDOp.IsFullyEnabled() == false)
+                {
+                    return;
+                }
+
                 // Avatar Blueprint ID
                 VRC.Core.PipelineManager pipelineManager = MergeTreeHandler.GetInstance().VirtualTreeRoot.RunTimeObject.GetComponentInChildren<VRC.Core.PipelineManager>(true);
                 // If doesnt exist, create one... I think this is ok to do! x'D
@@ -850,18 +855,9 @@ namespace SablesTools.AvatarCopier
                     pipelineManager = Undo.AddComponent<VRC.Core.PipelineManager>(MergeTreeHandler.GetInstance().VirtualTreeRoot.RunTimeObject);
                 }
 
-                if (MiscOperationHandler.GetInstance().AvatarIDOp.IsFullyEnabled())
-                {
-                    pipelineManager.blueprintId = MiscOperationHandler.GetInstance().AvatarIDOp.AvatarID;
-                }
-                else
-                {
-                    pipelineManager.blueprintId = "";
-                }
+                pipelineManager.blueprintId = MiscOperationHandler.GetInstance().AvatarIDOp.AvatarID;
             }
         }
-
-
     }
 }
 #endif

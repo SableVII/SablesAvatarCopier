@@ -1767,11 +1767,18 @@ namespace SablesTools.AvatarCopier.EditorUI
 
                 if (bToggle != (MiscOperationEnabledCount != 0))
                 {
-                    MiscOperationHandler.GetInstance().RepositionOp.bUserSetEnabled = bToggle;
-                    MiscOperationHandler.GetInstance().AvatarIDOp.bUserSetEnabled = bToggle;
-                    MiscOperationHandler.GetInstance().RepositionOp.bUserSetPositionEnabled = bToggle;
-                    MiscOperationHandler.GetInstance().RepositionOp.bUserSetRotationEnabled = bToggle;
-                    MiscOperationHandler.GetInstance().RepositionOp.bUserSetScaleEnabled = bToggle;
+                    if (MiscOperationHandler.GetInstance().RepositionOp != null)
+                    {
+                        MiscOperationHandler.GetInstance().RepositionOp.bUserSetEnabled = bToggle;
+                        MiscOperationHandler.GetInstance().RepositionOp.bUserSetPositionEnabled = bToggle;
+                        MiscOperationHandler.GetInstance().RepositionOp.bUserSetRotationEnabled = bToggle;
+                        MiscOperationHandler.GetInstance().RepositionOp.bUserSetScaleEnabled = bToggle;
+                    }
+
+                    if (MiscOperationHandler.GetInstance().AvatarIDOp != null)
+                    {
+                        MiscOperationHandler.GetInstance().AvatarIDOp.bUserSetEnabled = bToggle;
+                    }
                 }
             }
 
