@@ -1,11 +1,11 @@
 {
   "name": "vrchat.sable7.sables-avatar-copier",
   "displayName": "Sable's Avatar Copier",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "author": {
     "name": "Sable7",
     "email": "sableseven@hotmail.com",
-    "url": "https://github.com/SableVII/SablesTools"
+    "url": "https://github.com/SableVII/SablesAvatarCopier"
   },
   "unity": "2019.4",
   "description": "Sable's Copier! Copy an avatar and all its components and attachables to another avatar with ease!",
