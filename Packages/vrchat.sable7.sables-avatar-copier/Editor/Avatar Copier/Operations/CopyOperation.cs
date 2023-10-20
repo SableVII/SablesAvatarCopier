@@ -65,7 +65,7 @@ namespace SablesTools.AvatarCopier.Operations
 
     public class PreExistingComponentOperation : ComponentOperation
     {
-        public bool IsBeingOverriden { get { return _OverridingCompOp != null; } }
+        public bool IsBeingOverriden { get { return _OverridingCompOp != null && _OverridingCompOp.IsFullyEnabled(); } }
         protected OverridingComponentOperation _OverridingCompOp = null;
         public OverridingComponentOperation OverridingCompOp { get { return _OverridingCompOp; } }
 
