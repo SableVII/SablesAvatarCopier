@@ -161,7 +161,7 @@ namespace SablesTools.AvatarCopier.EditorUI
             string attachableLabel = "Attachable Objects";
             if (attachableTotalCount > 0)
             {
-                attachableLabel += " <color=" + CopierGUIStyles.LightTextHexColor + ">(" + AvatarCopierUtils.GetXOutOfTotalText(attachableEnabledCount, attachableTotalCount) + ")</color>";
+                attachableLabel += "  <i><color=" + CopierGUIStyles.LightTextHexColor + ">(" + AvatarCopierUtils.GetXOutOfTotalText(attachableEnabledCount, attachableTotalCount) + ")</color></i>";
 
                 bool bPrevState = attachableEnabledCount != 0;
                 DrawUtils.DrawToggleFoldoutWithSymbols(ref bPrevState, ref bShowAttachmentOps, EditorGUILayout.GetControlRect(), attachableLabel, AttachmentOperationHandler.GetInstance().AttachablesHaveWarnings() ? "Warning" : "", "Attachable" );
@@ -290,7 +290,7 @@ namespace SablesTools.AvatarCopier.EditorUI
                     {
                         if (bIsSelected)
                         {
-                            MergeTreeUIPanel.GetInstance().ClearSelectedParameters();
+                            MergeTreeUIPanel.GetInstance().ClearSelectionMode();
                         }
                         else
                         {
@@ -358,10 +358,10 @@ namespace SablesTools.AvatarCopier.EditorUI
             string compOpLabel = "Component Operations";
             if (ComponentOperationHandler.GetInstance().OverridingCompOperations.Count != 0 || ComponentOperationHandler.GetInstance().PreExistingCompOperations.Count != 0 || ComponentOperationHandler.GetInstance().UnusedComponentOperations.Count != 0)
             {
-                compOpLabel += " <color=" + CopierGUIStyles.LightTextHexColor + ">";
+                compOpLabel += "  <i><color=" + CopierGUIStyles.LightTextHexColor + ">";
                 compOpLabel += "(Overriding: " + AvatarCopierUtils.GetXOutOfTotalText(overridingCompOpEnabledCount, overridingCompOpTotalCount) + ")";
                 compOpLabel += " (Pre-Existing: " + AvatarCopierUtils.GetXOutOfTotalText(preExistingCompOpEnabledCount, preExistingCompOpTotalCount) + ")";
-                compOpLabel += "</color>";
+                compOpLabel += "</color></i>";
             }
 
             DrawUtils.DrawTextWithSymbols(EditorGUILayout.GetControlRect(), compOpLabel, (preExistingHasWarning || overridingHasWarning) ? "Warning" : "");
@@ -414,25 +414,18 @@ namespace SablesTools.AvatarCopier.EditorUI
             int preExistingReplacedTotalCount = ComponentOperationHandler.GetInstance().GetReplacedTotalCount();
             if (preExistingNonReplacedTotalCount > 0 || preExistingReplacedTotalCount > 0)
             {
-                string preExistingLabelText = "Pre-Existing" + "<color=" + CopierGUIStyles.LightTextHexColor + ">";
+                string preExistingLabelText = "Pre-Existing  ";
 
                 if (preExistingNonReplacedTotalCount > 0)
                 {
-                    preExistingLabelText += " (Pre-Exists: " + AvatarCopierUtils.GetXOutOfTotalText(ComponentOperationHandler.GetInstance().GetNonReplacedEnabledCount(), preExistingNonReplacedTotalCount) + ")";
+                    preExistingLabelText += "<i><color=" + CopierGUIStyles.PreExistsTagHexTextColor + ">(Pre-Exists: " + AvatarCopierUtils.GetXOutOfTotalText(ComponentOperationHandler.GetInstance().GetNonReplacedEnabledCount(), preExistingNonReplacedTotalCount) + ")</color></i> ";
                 }
 
             
                 if (preExistingReplacedTotalCount > 0)
                 {
-                    preExistingLabelText += " (Replaced: " + AvatarCopierUtils.GetXOutOfTotalText(ComponentOperationHandler.GetInstance().GetReplacedEnabledCount(), preExistingReplacedTotalCount) + ")";
+                    preExistingLabelText += "<i><color=" + CopierGUIStyles.ReplacedTagHexTextColor + ">(Replaced: " + AvatarCopierUtils.GetXOutOfTotalText(ComponentOperationHandler.GetInstance().GetReplacedEnabledCount(), preExistingReplacedTotalCount) + ")</color></i> ";
                 }
-
-                //if (preExistingHasWarning)
-                //{
-                //    preExistingLabelText = "      " + preExistingLabelText;
-                //}
-
-                preExistingLabelText += "</color>";
 
                 bShowPreExistingCompOps = DrawUtils.DrawFoldoutWithSymbols(bShowPreExistingCompOps, EditorGUILayout.GetControlRect(), preExistingLabelText, preExistingHasWarning ? "Warning" : "");
             }
@@ -476,24 +469,17 @@ namespace SablesTools.AvatarCopier.EditorUI
 
             if (overridingReplacingTotalCount > 0 || overridingNewTotalCount > 0)
             {
-                string overridingLabelText = "Overriding<color=" + CopierGUIStyles.LightTextHexColor + ">";
+                string overridingLabelText = "Overriding  ";
 
                 if (overridingNewTotalCount > 0)
                 {
-                    overridingLabelText += " (New: " + AvatarCopierUtils.GetXOutOfTotalText(ComponentOperationHandler.GetInstance().GetNewEnabledCount(), overridingNewTotalCount) + ")";
+                    overridingLabelText += "<i><color=" + CopierGUIStyles.NewComponentTagHexTextColor + ">(New: " + AvatarCopierUtils.GetXOutOfTotalText(ComponentOperationHandler.GetInstance().GetNewEnabledCount(), overridingNewTotalCount) + ")</color></i> ";
                 }
 
                 if (overridingReplacingTotalCount > 0)
                 {
-                    overridingLabelText += " (Replacing: " + AvatarCopierUtils.GetXOutOfTotalText(ComponentOperationHandler.GetInstance().GetReplacedEnabledCount(), overridingReplacingTotalCount) + ")";
+                    overridingLabelText += "<i><color=" + CopierGUIStyles.ReplacingTagHexTextColor + ">(Replacing: " + AvatarCopierUtils.GetXOutOfTotalText(ComponentOperationHandler.GetInstance().GetReplacedEnabledCount(), overridingReplacingTotalCount) + ")</color></i> ";
                 }
-
-                //if (overridingHasWarning)
-                //{
-                //    overridingLabelText = "      " + overridingLabelText;
-                //}
-
-                overridingLabelText += "</color>";
 
                 //if (overridingHasWarning)
                 //{
@@ -575,12 +561,28 @@ namespace SablesTools.AvatarCopier.EditorUI
                 }
 
                 /// GameObject Foldout
-                string preExistingCompOpCountText = AvatarCopierUtils.GetXOutOfTotalText(preExistingEnabledTotalCount, preExistingTotalCount);
-                string compLabelText = currentVirtualObj.Name + " <color=" + CopierGUIStyles.LightTextHexColor + ">(" + preExistingCompOpCountText + ")</color>";
+                //string preExistingCompOpCountText = AvatarCopierUtils.GetXOutOfTotalText(preExistingEnabledTotalCount, preExistingTotalCount);
+                //string compLabelText = currentVirtualObj.Name + " <color=" + CopierGUIStyles.LightTextHexColor + ">(" + preExistingCompOpCountText + ")</color>";
 
-                if (preExistingTotalCount == 0 || preExistingEnabledTotalCount == 0)
+                //if (preExistingTotalCount == 0 || preExistingEnabledTotalCount == 0)
+                //{
+                //    compLabelText = "<color=" + CopierGUIStyles.LightTextHexColor + ">" + compLabelText + "</color>";
+                //}
+
+                string compLabelText = currentVirtualObj.Name + "  ";
+
+                int preExistingPreExistsEnabledCount = currentVirtualObj.GetPreExistingPreExistsEnabledCount();
+                int preExistingPreExistsCount = currentVirtualObj.GetPreExistingPreExistsCount();
+                if (preExistingPreExistsCount > 0)
                 {
-                    compLabelText = "<color=" + CopierGUIStyles.LightTextHexColor + ">" + compLabelText + "</color>";
+                    compLabelText += "<i><color=" + CopierGUIStyles.PreExistsTagHexTextColor + ">(" + AvatarCopierUtils.GetXOutOfTotalText(preExistingPreExistsEnabledCount, preExistingPreExistsCount) + ")</color></i> ";
+                }
+
+                int preExistingReplacedEnabledCount = currentVirtualObj.GetPreExistingReplacedEnabledCount();
+                int preExistingReplacedCount = currentVirtualObj.GetPreExistingReplacedCount();
+                if (preExistingReplacedCount > 0)
+                {
+                    compLabelText += "<i><color=" + CopierGUIStyles.ReplacedTagHexTextColor + ">(" + AvatarCopierUtils.GetXOutOfTotalText(preExistingReplacedEnabledCount, preExistingReplacedCount) + ")</color></i> ";
                 }
 
                 currentVirtualObj.bShowPreExistingCompOps = DrawUtils.DrawFoldoutWithSymbols(currentVirtualObj.bShowPreExistingCompOps, EditorGUILayout.GetControlRect(), compLabelText, currentVirtualObj.PreExistingHasWarning() ? "Warning" : "");
@@ -649,7 +651,22 @@ namespace SablesTools.AvatarCopier.EditorUI
 
                 Rect objectRect = EditorGUILayout.BeginHorizontal();
 
-                string compLabelText = currentVirtualObj.Name + " <color=" + CopierGUIStyles.LightTextHexColor + ">(" + AvatarCopierUtils.GetXOutOfTotalText(overridableEnabledCount, overridableTotalCount) + ")</color>";
+                //string compLabelText = currentVirtualObj.Name + " <color=" + CopierGUIStyles.LightTextHexColor + ">(" + AvatarCopierUtils.GetXOutOfTotalText(overridableEnabledCount, overridableTotalCount) + ")</color>";
+                string compLabelText = currentVirtualObj.Name + "  ";
+
+                int overridableNewEnabledCount = currentVirtualObj.GetOverridingNewEnabledCount();
+                int overridableNewCount = currentVirtualObj.GetOverridingNewCount();
+                if (overridableNewCount > 0)
+                {
+                    compLabelText += "<i><color=" + CopierGUIStyles.NewComponentTagHexTextColor + ">(" + AvatarCopierUtils.GetXOutOfTotalText(overridableNewEnabledCount, overridableNewCount) + ")</color></i> ";
+                }
+
+                int overridableReplacingEnabledCount = currentVirtualObj.GetOverridingReplacingEnabledCount();
+                int overridableReplacingCount = currentVirtualObj.GetOverridingReplacingCount();
+                if (overridableReplacingCount > 0)
+                {
+                    compLabelText += "<i><color=" + CopierGUIStyles.ReplacingTagHexTextColor + ">(" + AvatarCopierUtils.GetXOutOfTotalText(overridableReplacingEnabledCount, overridableReplacingCount) + ")</color></i> ";
+                }
 
                 bool bShow = currentVirtualObj.bShowOverridingCompOps;
                 bool bToggle = overridableEnabledCount != 0;
@@ -767,8 +784,25 @@ namespace SablesTools.AvatarCopier.EditorUI
                 EditorGUILayout.BeginHorizontal();
 
                 /// GameObject Foldout
-                string copyComponentOperationOfTypeCountText = AvatarCopierUtils.GetXOutOfTotalText(enabledPreExistingCount, preExistingTotalCount);
-                string compLabelText = AvatarCopierUtils.TypeToFriendlyName(copyType) + "  <color=" + CopierGUIStyles.LightTextHexColor + ">(" + copyComponentOperationOfTypeCountText + ")</color>";
+                //string copyComponentOperationOfTypeCountText = AvatarCopierUtils.GetXOutOfTotalText(enabledPreExistingCount, preExistingTotalCount);
+                //string compLabelText = AvatarCopierUtils.TypeToFriendlyName(copyType) + "  <color=" + CopierGUIStyles.LightTextHexColor + ">(" + copyComponentOperationOfTypeCountText + ")</color>";
+
+                string compLabelText = AvatarCopierUtils.TypeToFriendlyName(copyType) + "  ";
+
+                int preExistingPreExistTotalCount = typeCompOpList.GetPreExistingPreExistsCount();
+                int preExistingPreExistEnabledCount = typeCompOpList.GetPreExistingPreExistsEnabledCount();
+                if (preExistingPreExistTotalCount > 0)
+                {
+                    compLabelText += "<i><color=" + CopierGUIStyles.PreExistsTagHexTextColor + ">(" + AvatarCopierUtils.GetXOutOfTotalText(preExistingPreExistEnabledCount, preExistingPreExistTotalCount) + ")</color></i> ";
+                }
+
+                int preExistingReplacedTotalCount = typeCompOpList.GetPreExistingReplacedCount();
+                int preExistingReplacedEnabledCount = typeCompOpList.GetPreExistingReplacedEnabledCount();
+                if (preExistingReplacedTotalCount > 0)
+                {
+                    compLabelText += "<i><color=" + CopierGUIStyles.ReplacedTagHexTextColor + ">(" + AvatarCopierUtils.GetXOutOfTotalText(preExistingReplacedEnabledCount, preExistingReplacedTotalCount) + ")</color></i> ";
+                }
+
 
                 bool bHasWarning = typeCompOpList.PreExistingHasWarning();
                 typeCompOpList.bPreExistingOpenInUI = DrawUtils.DrawFoldoutWithSymbols(typeCompOpList.bPreExistingOpenInUI, EditorGUILayout.GetControlRect(), compLabelText, bHasWarning ? "Warning" : "", AvatarCopierUtils.TypeToFriendlyName(copyType));
@@ -853,7 +887,24 @@ namespace SablesTools.AvatarCopier.EditorUI
 
                 Rect r = EditorGUILayout.BeginHorizontal();
 
-                string compLabelText = AvatarCopierUtils.TypeToFriendlyName(copyType) + "  <color=" + CopierGUIStyles.LightTextHexColor + ">(" + AvatarCopierUtils.GetXOutOfTotalText(overridableEnabledCount, overridableTotalCount) + ")</color>";
+                //string compLabelText = AvatarCopierUtils.TypeToFriendlyName(copyType) + "  <color=" + CopierGUIStyles.LightTextHexColor + ">(" + AvatarCopierUtils.GetXOutOfTotalText(overridableEnabledCount, overridableTotalCount) + ")</color>";
+
+                string compLabelText = AvatarCopierUtils.TypeToFriendlyName(copyType) + "  ";
+
+                int overridableNewEnabledCount = typeCompOpList.GetOverridingNewEnabledCount();
+                int overridableNewTotalCount = typeCompOpList.GetOverridingNewCount();
+                if (overridableNewTotalCount > 0)
+                {
+                    compLabelText += "<i><color=" + CopierGUIStyles.NewComponentTagHexTextColor + ">(" + AvatarCopierUtils.GetXOutOfTotalText(overridableNewEnabledCount, overridableNewTotalCount) + ")</color></i> ";
+                }
+
+                int overridableReplacingEnabledCount = typeCompOpList.GetOverridingReplacingEnabledCount();
+                int overridableReplacingTotalCount = typeCompOpList.GetOverridingReplacingCount();
+                if (overridableReplacingTotalCount > 0)
+                {
+                    compLabelText += "<i><color=" + CopierGUIStyles.ReplacingTagHexTextColor + ">(" + AvatarCopierUtils.GetXOutOfTotalText(overridableReplacingEnabledCount, overridableReplacingTotalCount) + ")</color></i> ";
+                }
+
 
                 bool bShow = typeCompOpList.bOverridingOpenInUI;
                 bool bToggle = overridableEnabledCount != 0;
@@ -919,7 +970,7 @@ namespace SablesTools.AvatarCopier.EditorUI
             Rect TitleRect = EditorGUILayout.BeginHorizontal();
 
             /// GameObject Foldout
-            string unusedLabelText = "Unused Component Operations  <color=" + CopierGUIStyles.LightTextHexColor + ">(" + ComponentOperationHandler.GetInstance().UnusedComponentOperations.Count + ")</color>";
+            string unusedLabelText = "Unused Component Operations  <i><color=" + CopierGUIStyles.LightTextHexColor + ">(" + ComponentOperationHandler.GetInstance().UnusedComponentOperations.Count + ")</color></i>";
             //string CompTooltipText = "Tooltip add me plz";
 
             bShowUnusedCompOps = DrawUtils.DrawFoldoutWithSymbols(bShowUnusedCompOps, EditorGUILayout.GetControlRect(), unusedLabelText, "Warning");
@@ -989,31 +1040,31 @@ namespace SablesTools.AvatarCopier.EditorUI
             {
                 if (compOp.OriginalVirtualGameObjectRef != compOp.VirtualGameObjectRef)
                 {
-                    EditorGUILayout.LabelField("<color=" + CopierGUIStyles.MovedTagHexTextColor + ">Moved</color>", CopierGUIStyles.GetBoxStyle());
+                    EditorGUILayout.LabelField("<i><color=" + CopierGUIStyles.MovedTagHexTextColor + ">Moved</color></i>", CopierGUIStyles.GetBoxStyle());
                 }
 
                 if (overridingCompOp.IsUnused)
                 {
-                    EditorGUILayout.LabelField("<color=" + CopierGUIStyles.UnusedTagHexTextColor + ">Unused</color>", CopierGUIStyles.GetBoxStyle());
+                    EditorGUILayout.LabelField("<i><color=" + CopierGUIStyles.UnusedTagHexTextColor + ">Unused</color></i>", CopierGUIStyles.GetBoxStyle());
                 }
                 else if (overridingCompOp.IsReplacing)
                 {
-                    EditorGUILayout.LabelField("<color=" + CopierGUIStyles.OverridingTagHexTextColor + ">Overriding</color>", CopierGUIStyles.GetBoxStyle());
+                    EditorGUILayout.LabelField("<i><color=" + CopierGUIStyles.ReplacingTagHexTextColor + ">Replacing</color></i>", CopierGUIStyles.GetBoxStyle());
                 }
                 else
                 {
-                    EditorGUILayout.LabelField("<color=" + CopierGUIStyles.NewComponentTagHexTextColor + ">New</color>", CopierGUIStyles.GetBoxStyle());
+                    EditorGUILayout.LabelField("<i><color=" + CopierGUIStyles.NewComponentTagHexTextColor + ">New</color></i>", CopierGUIStyles.GetBoxStyle());
                 }
             }
             else
             {
                 if (preExistingCompOp.IsBeingOverriden)
                 {
-                    EditorGUILayout.LabelField("<color=" + CopierGUIStyles.ReplacedTagHexTextColor + ">Replaced</color>", CopierGUIStyles.GetBoxStyle());
+                    EditorGUILayout.LabelField("<i><color=" + CopierGUIStyles.ReplacedTagHexTextColor + ">Replaced</color></i>", CopierGUIStyles.GetBoxStyle());
                 }
                 else
                 {
-                    EditorGUILayout.LabelField("<color=" + CopierGUIStyles.PreExistsTagHexTextColor + ">Pre-Exists</color>", CopierGUIStyles.GetBoxStyle());
+                    EditorGUILayout.LabelField("<i><color=" + CopierGUIStyles.PreExistsTagHexTextColor + ">Pre-Exists</color></i>", CopierGUIStyles.GetBoxStyle());
                 }
             }
 
@@ -1090,7 +1141,7 @@ namespace SablesTools.AvatarCopier.EditorUI
 
                 if (GUILayout.Button(new GUIContent("Cancel"), GUILayout.Width(65)))
                 {
-                    MergeTreeUIPanel.GetInstance().ClearSelectedParameters();
+                    MergeTreeUIPanel.GetInstance().ClearSelectionMode();
                 }
             }
             else
@@ -1132,7 +1183,7 @@ namespace SablesTools.AvatarCopier.EditorUI
                 Rect unusedRect = EditorGUILayout.BeginHorizontal();
                 bool bHasWarning = compOp.RegisteredRefCollection.HasWarning();
 
-                string foldoutLabelText = "Used References <color=" + CopierGUIStyles.LightTextHexColor + ">(" + compOp.RegisteredRefCollection.RegisteredReferences.Count + ")</color>";
+                string foldoutLabelText = "Used References  <i><color=" + CopierGUIStyles.LightTextHexColor + ">(" + compOp.RegisteredRefCollection.RegisteredReferences.Count + ")</color></i>";
 
                 compOp.RegisteredRefCollection.bOpenInUI = DrawUtils.DrawFoldoutWithSymbols(compOp.RegisteredRefCollection.bOpenInUI, EditorGUILayout.GetControlRect(), foldoutLabelText, bHasWarning ? "Warning" : "");
 
@@ -1332,7 +1383,7 @@ namespace SablesTools.AvatarCopier.EditorUI
                             {
                                 if (GUILayout.Button(new GUIContent("Cancel"), GUILayout.Width(65)))
                                 {
-                                    MergeTreeUIPanel.GetInstance().ClearSelectedParameters();
+                                    MergeTreeUIPanel.GetInstance().ClearSelectionMode();
                                 }
                             }
                             else
@@ -1382,7 +1433,7 @@ namespace SablesTools.AvatarCopier.EditorUI
                 {
                     if (materialOperationTotalCount != 0)
                     {
-                        materialLabelText += " <color=" + CopierGUIStyles.DimSelectionTextHexColor + ">(" + AvatarCopierUtils.GetXOutOfTotalText(materialOperationEnabledCount, materialOperationTotalCount) + ")</color>";
+                        materialLabelText += "  <i><color=" + CopierGUIStyles.DimSelectionTextHexColor + ">(" + AvatarCopierUtils.GetXOutOfTotalText(materialOperationEnabledCount, materialOperationTotalCount) + ")</color></i>";
                     }
 
                     bool bToggle = materialOperationEnabledCount != 0;
@@ -1525,7 +1576,7 @@ namespace SablesTools.AvatarCopier.EditorUI
                 {
                     if (scaleOperationTotalCount != 0)
                     {
-                        scaleLabelText += " <color=" + CopierGUIStyles.DimSelectionTextHexColor + ">(" + AvatarCopierUtils.GetXOutOfTotalText(scaleOperationEnabledCount, scaleOperationTotalCount) + ")</color>";
+                        scaleLabelText += "  <i><color=" + CopierGUIStyles.DimSelectionTextHexColor + ">(" + AvatarCopierUtils.GetXOutOfTotalText(scaleOperationEnabledCount, scaleOperationTotalCount) + ")</color></i>";
                     }
 
                     bool bToggle = scaleOperationEnabledCount != 0;
@@ -1665,6 +1716,9 @@ namespace SablesTools.AvatarCopier.EditorUI
                 bool bToggle = EnabledDisabledOperationEnabledCount != 0;
                 //bool bNextState = DrawToggleFoldout("Enabled/Disabled Operations", "", "", EnabledDisabledOperationEnabledCount, EnabledDisabledOperationTotalCount, bPrevState, ref bShowEnabledDisabledOperations);
 
+                enabledDisabledLabelText += "  <i><color=" + CopierGUIStyles.DimSelectionTextHexColor + ">(" + AvatarCopierUtils.GetXOutOfTotalText(EnabledDisabledOperationEnabledCount, EnabledDisabledOperationTotalCount) +")</color></i>";
+
+
                 DrawUtils.DrawToggleFoldoutWithSymbols(ref bToggle, ref bShowEnabledDisabledOps, EditorGUILayout.GetControlRect(), enabledDisabledLabelText);
 
                 if (bToggle != (EnabledDisabledOperationEnabledCount != 0))
@@ -1758,7 +1812,7 @@ namespace SablesTools.AvatarCopier.EditorUI
             {
                 if (MiscOperationTotalCount != 0)
                 {
-                    miscLabelText += " <color=" + CopierGUIStyles.DimSelectionTextHexColor + ">(" + AvatarCopierUtils.GetXOutOfTotalText(MiscOperationEnabledCount, MiscOperationTotalCount) + ")</color>";
+                    miscLabelText += "  <i><color=" + CopierGUIStyles.DimSelectionTextHexColor + ">(" + AvatarCopierUtils.GetXOutOfTotalText(MiscOperationEnabledCount, MiscOperationTotalCount) + ")</color></i>";
                 }
 
                 bool bToggle = MiscOperationEnabledCount != 0;

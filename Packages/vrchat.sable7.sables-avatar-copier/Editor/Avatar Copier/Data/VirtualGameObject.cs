@@ -361,6 +361,126 @@ namespace SablesTools.AvatarCopier.Data
 
             return false;
         }
+
+        // Potential Optimization: Store this count
+        public int GetPreExistingPreExistsCount()
+        {
+            int count = 0;
+            foreach (PreExistingComponentOperation preExistingOp in _PreExistingCompOps)
+            {
+                if (preExistingOp.IsBeingOverriden == false)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        // Potential Optimization: Store this count
+        public int GetPreExistingPreExistsEnabledCount()
+        {
+            int count = 0;
+            foreach (PreExistingComponentOperation preExistingOp in _PreExistingCompOps)
+            {
+                if (preExistingOp.IsFullyEnabled() && preExistingOp.IsBeingOverriden == false)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        // Potential Optimization: Store this count
+        public int GetPreExistingReplacedCount()
+        {
+            int count = 0;
+            foreach (PreExistingComponentOperation preExistingOp in _PreExistingCompOps)
+            {
+                if (preExistingOp.IsBeingOverriden)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        // Potential Optimization: Store this count
+        public int GetPreExistingReplacedEnabledCount()
+        {
+            int count = 0;
+            foreach (PreExistingComponentOperation preExistingOp in _PreExistingCompOps)
+            {
+                if (preExistingOp.IsFullyEnabled() && preExistingOp.IsBeingOverriden)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        // Potential Optimization: Store this count
+        public int GetOverridingReplacingEnabledCount()
+        {
+            int count = 0;
+            foreach (OverridingComponentOperation overridingOp in _OverridingCompOps)
+            {
+                if (overridingOp.IsFullyEnabled() && overridingOp.IsReplacing)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        // Potential Optimization: Store this count
+        public int GetOverridingNewEnabledCount()
+        {
+            int count = 0;
+            foreach (OverridingComponentOperation overridingOp in _OverridingCompOps)
+            {
+                if (overridingOp.IsFullyEnabled() && overridingOp.IsReplacing == false)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        // Potential Optimization: Store this count
+        public int GetOverridingReplacingCount()
+        {
+            int count = 0;
+            foreach (OverridingComponentOperation overridingOp in _OverridingCompOps)
+            {
+                if (overridingOp.IsReplacing)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        // Potential Optimization: Store this count
+        public int GetOverridingNewCount()
+        {
+            int count = 0;
+            foreach (OverridingComponentOperation overridingOp in _OverridingCompOps)
+            {
+                if (overridingOp.IsReplacing == false)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
     }
 }
 

@@ -48,9 +48,9 @@ namespace SablesTools.AvatarCopier.EditorUI
         //public static Color NewComponentTagColor = new Color(0.2f, 1.0f, 0.2f);
 
         public static string AttachableTextHexColor = "#4040ff";
-        public static string OverridingTagHexTextColor = "#ffb010";
+        public static string ReplacingTagHexTextColor = "#ffb010";
         public static string ReplacedTagHexTextColor = "#f0f030";
-        public static string PreExistsTagHexTextColor = "#a7a7a7";
+        public static string PreExistsTagHexTextColor = "#7a7afa";
         public static string UnusedTagHexTextColor = "#151515";
         public static string MovedTagHexTextColor = "#60b0d0";
         public static string NewComponentTagHexTextColor = "#40ff40";

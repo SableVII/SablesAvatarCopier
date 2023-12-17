@@ -44,7 +44,7 @@ namespace SablesTools.AvatarCopier.Handlers
             SavedAvatarIDOp = AvatarIDOp;
 
             RepositionOp = null;
-            SavedAvatarIDOp = null;
+            AvatarIDOp = null;
         }
 
         public void ApplySavedData()

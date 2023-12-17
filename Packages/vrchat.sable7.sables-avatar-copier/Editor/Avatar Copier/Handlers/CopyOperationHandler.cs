@@ -13,7 +13,6 @@ namespace SablesTools.AvatarCopier.Handlers
         protected List<OverridingComponentOperation> _OverridingOps = new List<OverridingComponentOperation>();
         public bool bPreExistingOpenInUI { get; set; } = false;
         public bool bOverridingOpenInUI { get; set; } = false;
-
         public int GetTotalCompOpCount()
         {
             return _PreExistingOps.Count + _OverridingOps.Count;
@@ -27,6 +26,126 @@ namespace SablesTools.AvatarCopier.Handlers
         public int GetOverridingCount()
         {
             return _OverridingOps.Count;
+        }
+
+        // Potential Optimization: Store this count
+        public int GetPreExistingPreExistsCount()
+        {
+            int count = 0;
+            foreach (PreExistingComponentOperation preExistingOp in _PreExistingOps)
+            {
+                if (preExistingOp.IsBeingOverriden == false)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        // Potential Optimization: Store this count
+        public int GetPreExistingPreExistsEnabledCount()
+        {
+            int count = 0;
+            foreach (PreExistingComponentOperation preExistingOp in _PreExistingOps)
+            {
+                if (preExistingOp.IsFullyEnabled() && preExistingOp.IsBeingOverriden == false)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        // Potential Optimization: Store this count
+        public int GetPreExistingReplacedCount()
+        {
+            int count = 0;
+            foreach (PreExistingComponentOperation preExistingOp in _PreExistingOps)
+            {
+                if (preExistingOp.IsBeingOverriden)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        // Potential Optimization: Store this count
+        public int GetPreExistingReplacedEnabledCount()
+        {
+            int count = 0;
+            foreach (PreExistingComponentOperation preExistingOp in _PreExistingOps)
+            {
+                if (preExistingOp.IsFullyEnabled() && preExistingOp.IsBeingOverriden)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        // Potential Optimization: Store this count
+        public int GetOverridingReplacingEnabledCount()
+        {
+            int count = 0;
+            foreach (OverridingComponentOperation overridingOp in _OverridingOps)
+            {
+                if (overridingOp.IsFullyEnabled() && overridingOp.IsReplacing)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        // Potential Optimization: Store this count
+        public int GetOverridingNewEnabledCount()
+        {
+            int count = 0;
+            foreach (OverridingComponentOperation overridingOp in _OverridingOps)
+            {
+                if (overridingOp.IsFullyEnabled() && overridingOp.IsReplacing == false)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        // Potential Optimization: Store this count
+        public int GetOverridingReplacingCount()
+        {
+            int count = 0;
+            foreach (OverridingComponentOperation overridingOp in _OverridingOps)
+            {
+                if (overridingOp.IsReplacing)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        // Potential Optimization: Store this count
+        public int GetOverridingNewCount()
+        {
+            int count = 0;
+            foreach (OverridingComponentOperation overridingOp in _OverridingOps)
+            {
+                if (overridingOp.IsReplacing == false)
+                {
+                    count++;
+                }
+            }
+
+            return count;
         }
 
         public int GetEnabledPreExistingCount()
@@ -334,7 +453,7 @@ namespace SablesTools.AvatarCopier.Handlers
                             {
                                 RegisteredReferenceElement savedRefElement = savedRegisteredRef.GetReferenceElement(k);
                                 RegisteredReferenceElement refElement = registeredRef.GetReferenceElement(k);
-                                if (!savedRefElement.bIsUserSet)
+                                if (savedRefElement.bIsUserSet == false)
                                 {
                                     continue;
                                 }
@@ -359,7 +478,13 @@ namespace SablesTools.AvatarCopier.Handlers
                                     VirtualGameObject DestinationLinked = AvatarMatchHandler.GetInstance().GetVirtualGameObjectFromDestinationObject(savedRefElement.VirtualReference.LinkedDestination);
                                     if (DestinationLinked == null)
                                     {
-                                        // Failed to link, then ref is no-longer valid
+                                        continue;
+                                    }
+
+                                    // Just incase the Linked Source was originally set to null, take whatever was set in the field
+                                    if (savedRefElement.VirtualReference.LinkedSource == null)
+                                    {
+                                        refElement.VirtualReference = DestinationLinked;
                                         continue;
                                     }
 

@@ -94,6 +94,8 @@ namespace SablesTools.AvatarCopier.EditorUI
             WarningHandler.GetInstance().Reset();
             InputErrorHandler.GetInstance().CheckInputsForErrors();
 
+            MergeTreeUIPanel.GetInstance().ClearSelectionMode(); // End any selection modes
+
             if (CopierSettingsHandler.GetInstance().Destination != null && CopierSettingsHandler.GetInstance().Source != null
                 && CopierSettingsHandler.GetInstance().Destination != CopierSettingsHandler.GetInstance().Source && !WarningHandler.GetInstance().HasHaultingErrors())
             {

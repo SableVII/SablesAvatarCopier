@@ -1,0 +1,26 @@
+Changelog:
+
+
+0.1.5
+	- Changed 'Pre-Existing' Tag color.
+	- Type and Object Copy Operations now label the amount of Pre-Existing/Replaced, New/Replacing operations respectively.
+	- Changed many counter readout text into italics for hopefully better readability.
+	- Tag names are now in italics.
+	- Fixed Selection Mode still being active after the window is refresh.
+	- Fixed Avatar-ID Operation re-enabling after the window is refresh.
+	- Fixed a bug where a Registered Reference would be reset to 'none' after the window refresh if name of set object is the same as the missing object.
+	- Fixed missing counter readout text on Enabled/Disabled Operation category.
+	
+0.1.4
+	- Fixed Avatar Blueprint ID from still being overridden if the Avatar ID Misc Operation is disabled.
+	
+0.1.3
+	- Fixed an issue with Animation Controllers in Animators causing Scale Operations to potentially copy incorrectly.
+	- Fixed the issue where Materials Operations were disabled in UI but would still be applied on copy/merge.
+	- Fixed some settings not being loading properly.
+	
+0.1.2
+	- Removed custom Preserved Property functionality.
+	- The Tool no longer creates a settings.json in the Resources folder. EditorPrefs are used instead.
+	- Material Operations now properly refresh if a Overriding Component Operation with a Renderer Component Type is moved to another location.
+	

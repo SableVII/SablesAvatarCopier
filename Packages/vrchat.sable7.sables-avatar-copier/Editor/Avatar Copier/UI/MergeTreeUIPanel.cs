@@ -79,7 +79,7 @@ namespace SablesTools.AvatarCopier.EditorUI
 
         public void SetRegisteredReferenceSelectionMode(RegisteredReferenceElement inRegisteredRef)
         {
-            ClearSelectedParameters();
+            ClearSelectionMode();
 
             if (inRegisteredRef == null)
             {
@@ -99,7 +99,7 @@ namespace SablesTools.AvatarCopier.EditorUI
 
         public void SetAttachableAttachmentPointSelectionMode(AttachmentOperation inAttachmentOperation)
         {
-            ClearSelectedParameters();
+            ClearSelectionMode();
 
             if (inAttachmentOperation == null)
             {
@@ -114,7 +114,7 @@ namespace SablesTools.AvatarCopier.EditorUI
 
         public void SetCompOpParentSelectionMode(OverridingComponentOperation inOverridingCompOp)
         {
-            ClearSelectedParameters();
+            ClearSelectionMode();
 
             if (inOverridingCompOp == null)
             {
@@ -132,7 +132,7 @@ namespace SablesTools.AvatarCopier.EditorUI
             }
         }
 
-        public void ClearSelectedParameters()
+        public void ClearSelectionMode()
         {
             SelectionMode = SelectionModeType.NONE;
 
@@ -384,7 +384,7 @@ namespace SablesTools.AvatarCopier.EditorUI
 
                 ComponentOperationHandler.GetInstance().RegisterForRefRefresh();
 
-                ClearSelectedParameters();
+                ClearSelectionMode();
             }
             GUI.enabled = true;
         }
@@ -410,7 +410,7 @@ namespace SablesTools.AvatarCopier.EditorUI
 
                 ComponentOperationHandler.GetInstance().RegisterForRefRefresh();
 
-                ClearSelectedParameters();
+                ClearSelectionMode();
 
                 MergeTreeHandler.GetInstance().ResetOrderedVirtualObjects();
             }
@@ -438,7 +438,7 @@ namespace SablesTools.AvatarCopier.EditorUI
 
                 ComponentOperationHandler.GetInstance().RegisterForRefRefresh();
 
-                ClearSelectedParameters();
+                ClearSelectionMode();
             }
             GUI.enabled = true;
         }
