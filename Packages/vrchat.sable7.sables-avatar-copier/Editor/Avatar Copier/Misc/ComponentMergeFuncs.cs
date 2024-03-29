@@ -61,6 +61,10 @@ namespace SablesTools.AvatarCopier
             {
                 CopyVRCContactSenderParameters(compOp);
             }
+            else if (compOp.ComponentType == typeof(VRC.SDK3.Avatars.Components.VRCHeadChop))
+            {
+                CopyVRCHeadChopParameters(compOp);
+            }
             else if (typeof(Renderer).IsAssignableFrom(compOp.ComponentType))
             {
                 CopyRendererParameters(compOp);
@@ -244,6 +248,19 @@ namespace SablesTools.AvatarCopier
             }
         }
 
+        static void CopyVRCHeadChopParameters(ComponentOperation compOp)
+        {
+            VRC.SDK3.Avatars.Components.VRCHeadChop destinationHeadChop = compOp.RunTimeComponent as VRC.SDK3.Avatars.Components.VRCHeadChop;
+
+            if (!PreservedPropertyHandler.GetInstance().GetIsPropertyPreserved(compOp.ComponentType, "targetTransforms"))
+            {
+                for (int i = 0; i < compOp.RegisteredRefCollection.GetRegisteredDataCountOfName("targetTransforms"); i++)
+                {
+                    destinationHeadChop.targetBones[i].transform = GetSingleComponentRef(compOp, "targetTransforms", i) as Transform;
+                }
+            }
+        }
+
         static void CopyClothParameters(ComponentOperation compOp)
         {
             Cloth destinationCloth = compOp.RunTimeComponent as Cloth;
@@ -251,13 +268,13 @@ namespace SablesTools.AvatarCopier
             // capsuleColliders
             if (!PreservedPropertyHandler.GetInstance().GetIsPropertyPreserved(compOp.ComponentType, "capsuleColliders"))
             {
-                List<CapsuleCollider> List = new List<CapsuleCollider>();
+                List<CapsuleCollider> list = new List<CapsuleCollider>();
                 
                 for (int i = 0; i < compOp.RegisteredRefCollection.GetRegisteredDataCountOfName("capsuleColliders"); i++)
                 {
-                    List.Add(GetSingleComponentRef(compOp, "capsuleColliders", i) as CapsuleCollider);
+                    list.Add(GetSingleComponentRef(compOp, "capsuleColliders", i) as CapsuleCollider);
                 }
-                destinationCloth.capsuleColliders = List.ToArray();
+                destinationCloth.capsuleColliders = list.ToArray();
             }
 
             // sphereColliders   // Special case as its a pair of two SphereColliders

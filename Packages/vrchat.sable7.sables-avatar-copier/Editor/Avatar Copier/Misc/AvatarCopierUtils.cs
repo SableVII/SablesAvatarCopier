@@ -43,7 +43,8 @@ namespace SablesTools.AvatarCopier
             typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone),
             typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBoneCollider),
             typeof(VRC.SDK3.Dynamics.Contact.Components.VRCContactSender),
-            typeof(VRC.SDK3.Dynamics.Contact.Components.VRCContactReceiver)
+            typeof(VRC.SDK3.Dynamics.Contact.Components.VRCContactReceiver),
+            typeof(VRC.SDK3.Avatars.Components.VRCHeadChop)
         };
 
         public static HashSet<System.Type> AllowedDuplicateCopyTypes = new HashSet<System.Type>
@@ -61,7 +62,8 @@ namespace SablesTools.AvatarCopier
             typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone),
             typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBoneCollider),
             typeof(VRC.SDK3.Dynamics.Contact.Components.VRCContactSender),
-            typeof(VRC.SDK3.Dynamics.Contact.Components.VRCContactReceiver)
+            typeof(VRC.SDK3.Dynamics.Contact.Components.VRCContactReceiver),
+            typeof(VRC.SDK3.Avatars.Components.VRCHeadChop)
         };
 
         public static HashSet<string> IgnoredPropertyAndFieldNames = new HashSet<string>
@@ -120,6 +122,8 @@ namespace SablesTools.AvatarCopier
                 return "VRC Contact Sender";
             if (inType == typeof(VRC.SDK3.Dynamics.Contact.Components.VRCContactReceiver))
                 return "VRC Contact Receiver";
+            if (inType == typeof(VRC.SDK3.Avatars.Components.VRCHeadChop))
+                return "VRC Head Chop";
             if (inType == typeof(Camera))
                 return "Camera";
             if (inType == typeof(Animator))
@@ -187,6 +191,7 @@ namespace SablesTools.AvatarCopier
         private static Texture2D _TrailRendererIcon = null;
         private static Texture2D _VRCAvatarDescriptorIcon = null;
         private static Texture2D _VRCPhysBoneIcon = null;
+        private static Texture2D _VRCHeadChopIcon = null;
         private static Texture2D _VRCPhysBoneColliderIcon = null;
         private static Texture2D _VRCContactSenderIcon = null;
         private static Texture2D _VRCContactReceiverIcon = null;
@@ -424,6 +429,14 @@ namespace SablesTools.AvatarCopier
                         _VRCContactReceiverIcon = EditorGUIUtility.IconContent("sv_icon_dot5_pix16_gizmo").image as Texture2D;
                     }
                     return _VRCContactReceiverIcon;
+
+                case "vrc head chop":
+                    if (_VRCHeadChopIcon == null)
+                    {
+                        _VRCHeadChopIcon = EditorGUIUtility.IconContent("HeadZoomSilhouette").image as Texture2D;
+                    }
+                    return _VRCHeadChopIcon;
+                    
             }
             return null;
         }

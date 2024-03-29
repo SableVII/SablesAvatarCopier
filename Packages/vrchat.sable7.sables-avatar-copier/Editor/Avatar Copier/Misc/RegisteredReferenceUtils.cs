@@ -38,6 +38,11 @@ namespace SablesTools.AvatarCopier
             {
                 GetVRCContactSenderRegisterablePropFields(compOp);
                 return;
+            }        
+            if (compOp.ComponentType == typeof(VRC.SDK3.Avatars.Components.VRCHeadChop))
+            {
+                GetVRCHeadChopRegisterablePropFields(compOp);
+                return;
             }
             if (typeof(Renderer).IsAssignableFrom(compOp.ComponentType) && compOp.ComponentType != typeof(ParticleSystemRenderer))
             {
@@ -279,6 +284,29 @@ namespace SablesTools.AvatarCopier
                 RegisteredReference newRefData = new RegisteredReference("rootTransform", typeof(Transform), compOp);
 
                 newRefData.AddRef(sourceVRCContactSender.rootTransform.gameObject);
+
+                compOp.RegisteredRefCollection.AddRegisteredData(newRefData);
+            }
+        }
+
+        /// VRC Head Chop
+        public static void GetVRCHeadChopRegisterablePropFields(ComponentOperation compOp)
+        {
+            VRC.SDK3.Avatars.Components.VRCHeadChop sourceVRCHeadChop = compOp.OriginComponent as VRC.SDK3.Avatars.Components.VRCHeadChop;
+
+            if (sourceVRCHeadChop == null)
+            {
+                return;
+            }
+
+            // Target Bone Transforms
+            if (sourceVRCHeadChop.targetBones.Length > 0)
+            {
+                RegisteredReference newRefData = new RegisteredReference("targetTransforms", typeof(Transform), compOp);
+                for (int i = 0; i < sourceVRCHeadChop.targetBones.Length; i++)
+                {
+                    newRefData.AddRef(sourceVRCHeadChop.targetBones[i].transform != null ? sourceVRCHeadChop.targetBones[i].transform.gameObject : null);
+                }
 
                 compOp.RegisteredRefCollection.AddRegisteredData(newRefData);
             }

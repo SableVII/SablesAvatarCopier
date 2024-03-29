@@ -621,6 +621,12 @@ namespace SablesTools.AvatarCopier.Handlers
             for (int i = 0; i < sourceComponents.Count; i++)
             {
                 Component comp = sourceComponents[i];
+
+                if (comp == null) // Can be null in-case of compile
+                {
+                    return;
+                }
+
                 System.Type compType = comp.GetType();
 
                 if (AvatarCopierUtils.AllowedCopyTypes.Contains(compType) == false)
