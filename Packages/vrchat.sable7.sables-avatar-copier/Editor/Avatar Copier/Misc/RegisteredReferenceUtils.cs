@@ -484,7 +484,7 @@ namespace SablesTools.AvatarCopier
 
             // Triggers
             int triggerColliderCount = 0;
-            for (int i = 0; i < sourceParticleSystem.trigger.maxColliderCount; i++)
+            for (int i = 0; i < sourceParticleSystem.trigger.colliderCount; i++)
             {
                 if (sourceParticleSystem.trigger.GetCollider(i) != null)
                 {
@@ -497,7 +497,7 @@ namespace SablesTools.AvatarCopier
                 RegisteredReference newRefData = new RegisteredReference("trigger.maxColliderCount", typeof(Transform), compOp);
 
                 int foundColliderCount = 0;
-                for (int i = 0; i < sourceParticleSystem.trigger.maxColliderCount; i++)
+                for (int i = 0; i < sourceParticleSystem.trigger.colliderCount; i++)
                 {
                     Component sourceCollider = sourceParticleSystem.trigger.GetCollider(i);
 
