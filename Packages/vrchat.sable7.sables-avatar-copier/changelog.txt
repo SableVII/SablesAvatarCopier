@@ -1,5 +1,9 @@
 Changelog:
 
+0.1.6
+	+ Added VRC Head Chop component support (Finally this component exists!!)
+	- Fixed crash related to Particle Collider counter
+	- Disabling one Copy Operation used in another Copy Operation, will now properly update its missing status in the referencing Copy Operation
 
 0.1.5
 	- Changed 'Pre-Existing' Tag color.
