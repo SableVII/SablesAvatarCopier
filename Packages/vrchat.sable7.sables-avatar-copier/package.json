@@ -7,11 +7,11 @@
     "email": "sableseven@hotmail.com",
     "url": "https://github.com/SableVII/SablesAvatarCopier"
   },
-  "unity": "2019.4",
+  "unity": "2022.3",
   "description": "Sable's Copier! Copy an avatar and all its components and attachables to another avatar with ease!",
   "type": "tool",
   "vrchatVersion": "2022.1.1",
   "dependencies": {
-    "com.vrchat.avatars": "3.2.3"
+    "com.vrchat.avatars": "3.5.2"
   }
 }

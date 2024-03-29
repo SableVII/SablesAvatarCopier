@@ -211,7 +211,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.vrchat.avatars": "3.2.3"
+        "com.vrchat.avatars": "3.5.2"
       }
     },
     "com.unity.modules.ai": {
