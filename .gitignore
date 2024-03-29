@@ -66,3 +66,7 @@ Assets/PackageMakerWindowData.asset*
 
 # All files under Assets
 Assets/*
+
+#Project/User settings
+ProjectSettings/*
+UserSettings/*
