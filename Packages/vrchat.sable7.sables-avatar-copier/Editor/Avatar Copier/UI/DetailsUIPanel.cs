@@ -1029,7 +1029,12 @@ namespace SablesTools.AvatarCopier.EditorUI
             // Draw Toggle and Name Line
             if (overridingCompOp != null)
             {
+                bool bPrevUserSetEnabled = compOp.bUserSetEnabled;
                 compOp.bUserSetEnabled = DrawUtils.DrawToggleWithSymbols(compOp.bUserSetEnabled, EditorGUILayout.GetControlRect(), compOpLabel, AvatarCopierUtils.TypeToFriendlyName(compOp.ComponentType));
+                if (bPrevUserSetEnabled != compOp.bUserSetEnabled)
+                {
+                    ComponentOperationHandler.GetInstance().RegisterForRefRefresh();
+                }
             }
             else
             {
