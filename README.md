@@ -3,6 +3,12 @@ Allows quickly copying all aspects of one avatar to another. This includes all c
 
 I get it, it's always been an absolute pain to re-add *everything* from one old avatar to a freshly imported avatar everytime you make a small change from Blender. Especially when there are absolutely zero changes needed to be made Unity-side. So, in-order to delay the onset of my inevitable collapse into insanity, I developed an Avatar Copier tool to make all those little changes with just the simple click of a button! Including the ability to see and modify everything that will be copied/merged over before you hit that button for those specific circumstances you may require extra precision.
 
+## Installation
+Use VRC Creator Companion
+OMG SABLE FILL IN PROPER INSTRUCTIONS HERE!!! Probally should include installation instructions via .zip or something...
+Idk, if you need help installing, just dm me! You are probally only here cuz I showed you to this repo. :3
+`https://SableVII.github.io/SablesAvatarCopier/index.json`
+
 ## How to Use
 Open the **Avatar Copier** window via `Window -> Sable Tool's Avatar -> Copier`.
 
