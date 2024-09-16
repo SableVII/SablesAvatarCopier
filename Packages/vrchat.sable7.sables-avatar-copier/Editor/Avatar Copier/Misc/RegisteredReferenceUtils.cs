@@ -630,19 +630,8 @@ namespace SablesTools.AvatarCopier
             // World Up Object (for VRC Aim Constraints and VRC Look At Constraints)
             if (typeof(VRC.Dynamics.ManagedTypes.VRCWorldUpConstraintBase).IsAssignableFrom(compOp.ComponentType))
             {
-                VRC.Dynamics.ManagedTypes.VRCWorldUpConstraintBase originalComponent = compOp.OriginComponent as VRC.Dynamics.ManagedTypes.VRCWorldUpConstraintBase;
+                VRC.Dynamics.ManagedTypes.VRCWorldUpConstraintBase originalComponent = compOp.OriginComponent as VRC.Dynamics.ManagedTypes.VRCWorldUpConstraintBase; // Shouldn't ever be null
                 // ^ Null Shouldn't ever happen
-
-                //Transform sourceWorldUpObject = originalComponent.WorldUpTransform;
-
-                //if (compOp.ComponentType == typeof(UnityEngine.Animations.AimConstraint))
-                //{
-                //    sourceWorldUpObject = (compOp.OriginComponent as UnityEngine.Animations.AimConstraint).worldUpObject;
-                //}
-                //else if (compOp.ComponentType == typeof(UnityEngine.Animations.LookAtConstraint))
-                //{
-                //    sourceWorldUpObject = (compOp.OriginComponent as UnityEngine.Animations.LookAtConstraint).worldUpObject;
-                //}
 
                 if (originalComponent.WorldUpTransform != null)
                 {
