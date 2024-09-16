@@ -1,5 +1,9 @@
 Changelog:
 
+0.1.7
+	+ Added VRC Constraint components support
+	- Fixed unnoticed potential issue where Unity Look At Constraints would not have its World Up Transfrom copied over
+
 0.1.6
 	+ Added VRC Head Chop component support (Finally this component exists!!)
 	- Fixed crash related to Particle Collider counter
