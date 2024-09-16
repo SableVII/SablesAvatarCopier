@@ -64,6 +64,11 @@ namespace SablesTools.AvatarCopier
                 GetParticleSystemPropFields(compOp);
                 return;
             }
+            if (typeof(VRC.Dynamics.VRCConstraintBase).IsAssignableFrom(compOp.ComponentType))
+            {
+                GetVRCConstraintPropFields(compOp);
+                return;
+            }
         }
 
         /// VRC Avatar Descriptor 
@@ -584,6 +589,69 @@ namespace SablesTools.AvatarCopier
                 newRefData.AddRef(sourcePartcileRenderer.lightProbeProxyVolumeOverride);
 
                 compOp.RegisteredRefCollection.AddRegisteredData(newRefData);
+            }
+        }
+
+        /// VRC Constraints
+        public static void GetVRCConstraintPropFields(ComponentOperation compOp)
+        {
+            VRC.Dynamics.VRCConstraintBase sourceConstraint = compOp.OriginComponent as VRC.Dynamics.VRCConstraintBase;
+
+            if (sourceConstraint == null)
+            {
+                return;
+            }
+
+            // Sources
+            if (sourceConstraint.Sources.Count > 0)
+            {
+                RegisteredReference newRefData = new RegisteredReference("sourceTransform", typeof(Transform), compOp);
+
+                for (int i = 0; i < sourceConstraint.Sources.Count; i++)
+                {
+                    VRC.Dynamics.VRCConstraintSource constraintSource = sourceConstraint.Sources[i];
+
+                    newRefData.AddRef(constraintSource.SourceTransform != null ? constraintSource.SourceTransform.gameObject : null);
+                }
+
+                compOp.RegisteredRefCollection.AddRegisteredData(newRefData);
+            }
+
+            // Target Transform
+            if (sourceConstraint.TargetTransform != null)
+            {
+                RegisteredReference newRefData = new RegisteredReference("targetTransform", typeof(Transform), compOp);
+
+                newRefData.AddRef(sourceConstraint.TargetTransform.gameObject);
+
+                compOp.RegisteredRefCollection.AddRegisteredData(newRefData);
+            }
+
+            // World Up Object (for VRC Aim Constraints and VRC Look At Constraints)
+            if (typeof(VRC.Dynamics.ManagedTypes.VRCWorldUpConstraintBase).IsAssignableFrom(compOp.ComponentType))
+            {
+                VRC.Dynamics.ManagedTypes.VRCWorldUpConstraintBase originalComponent = compOp.OriginComponent as VRC.Dynamics.ManagedTypes.VRCWorldUpConstraintBase;
+                // ^ Null Shouldn't ever happen
+
+                //Transform sourceWorldUpObject = originalComponent.WorldUpTransform;
+
+                //if (compOp.ComponentType == typeof(UnityEngine.Animations.AimConstraint))
+                //{
+                //    sourceWorldUpObject = (compOp.OriginComponent as UnityEngine.Animations.AimConstraint).worldUpObject;
+                //}
+                //else if (compOp.ComponentType == typeof(UnityEngine.Animations.LookAtConstraint))
+                //{
+                //    sourceWorldUpObject = (compOp.OriginComponent as UnityEngine.Animations.LookAtConstraint).worldUpObject;
+                //}
+
+                if (originalComponent.WorldUpTransform != null)
+                {
+                    RegisteredReference newRefData = new RegisteredReference("worldUpObject", typeof(Transform), compOp);
+
+                    newRefData.AddRef(originalComponent.WorldUpTransform.gameObject);
+
+                    compOp.RegisteredRefCollection.AddRegisteredData(newRefData);
+                }
             }
         }
     }

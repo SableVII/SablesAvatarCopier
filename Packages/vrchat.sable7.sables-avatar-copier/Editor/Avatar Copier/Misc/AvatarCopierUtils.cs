@@ -44,7 +44,14 @@ namespace SablesTools.AvatarCopier
             typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBoneCollider),
             typeof(VRC.SDK3.Dynamics.Contact.Components.VRCContactSender),
             typeof(VRC.SDK3.Dynamics.Contact.Components.VRCContactReceiver),
-            typeof(VRC.SDK3.Avatars.Components.VRCHeadChop)
+            typeof(VRC.SDK3.Avatars.Components.VRCHeadChop),
+
+            typeof(VRC.SDK3.Dynamics.Constraint.Components.VRCAimConstraint),
+            typeof(VRC.SDK3.Dynamics.Constraint.Components.VRCLookAtConstraint),
+            typeof(VRC.SDK3.Dynamics.Constraint.Components.VRCParentConstraint),
+            typeof(VRC.SDK3.Dynamics.Constraint.Components.VRCPositionConstraint),
+            typeof(VRC.SDK3.Dynamics.Constraint.Components.VRCRotationConstraint),
+            typeof(VRC.SDK3.Dynamics.Constraint.Components.VRCScaleConstraint)
         };
 
         public static HashSet<System.Type> AllowedDuplicateCopyTypes = new HashSet<System.Type>
@@ -63,7 +70,14 @@ namespace SablesTools.AvatarCopier
             typeof(VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBoneCollider),
             typeof(VRC.SDK3.Dynamics.Contact.Components.VRCContactSender),
             typeof(VRC.SDK3.Dynamics.Contact.Components.VRCContactReceiver),
-            typeof(VRC.SDK3.Avatars.Components.VRCHeadChop)
+            typeof(VRC.SDK3.Avatars.Components.VRCHeadChop),
+
+            typeof(VRC.SDK3.Dynamics.Constraint.Components.VRCAimConstraint),
+            typeof(VRC.SDK3.Dynamics.Constraint.Components.VRCLookAtConstraint),
+            typeof(VRC.SDK3.Dynamics.Constraint.Components.VRCParentConstraint),
+            typeof(VRC.SDK3.Dynamics.Constraint.Components.VRCPositionConstraint),
+            typeof(VRC.SDK3.Dynamics.Constraint.Components.VRCRotationConstraint),
+            typeof(VRC.SDK3.Dynamics.Constraint.Components.VRCScaleConstraint)
         };
 
         public static HashSet<string> IgnoredPropertyAndFieldNames = new HashSet<string>
@@ -140,6 +154,19 @@ namespace SablesTools.AvatarCopier
                 return "Transform";
             if (inType == typeof(GameObject))
                 return "Game Object";
+
+            if (inType == typeof(VRC.SDK3.Dynamics.Constraint.Components.VRCAimConstraint))
+                return "VRC Aim Constraint";
+            if (inType == typeof(VRC.SDK3.Dynamics.Constraint.Components.VRCLookAtConstraint))
+                return "VRC Look At Constraint";
+            if (inType == typeof(VRC.SDK3.Dynamics.Constraint.Components.VRCParentConstraint))
+                return "VRC Parent Constraint";
+            if (inType == typeof(VRC.SDK3.Dynamics.Constraint.Components.VRCPositionConstraint))
+                return "VRC Position Constraint";
+            if (inType == typeof(VRC.SDK3.Dynamics.Constraint.Components.VRCRotationConstraint))
+                return "VRC Rotation Constraint";
+            if (inType == typeof(VRC.SDK3.Dynamics.Constraint.Components.VRCScaleConstraint))
+                return "VRC Scale Constraint";
             return inType.ToString();
         }
 
@@ -195,6 +222,11 @@ namespace SablesTools.AvatarCopier
         private static Texture2D _VRCPhysBoneColliderIcon = null;
         private static Texture2D _VRCContactSenderIcon = null;
         private static Texture2D _VRCContactReceiverIcon = null;
+        private static Texture2D _VRCLookAtConstraintIcon = null;
+        private static Texture2D _VRCParentConstraintIcon = null;
+        private static Texture2D _VRCPositionConstraintIcon = null;
+        private static Texture2D _VRCRotationConstraintIcon = null;
+        private static Texture2D _VRCScaleConstraintIcon = null;
 
         //https://github.com/halak/unity-editor-icons
         public static Texture2D GetIconTexture(string iconName)
@@ -300,35 +332,35 @@ namespace SablesTools.AvatarCopier
                 case "look at constraint":
                     if (_LookAtConstraintIcon == null)
                     {
-                        _LookAtConstraintIcon = EditorGUIUtility.IconContent("d_LookAtConstraint Icon").image as Texture2D;
+                        _LookAtConstraintIcon = EditorGUIUtility.IconContent("LookAtConstraint Icon").image as Texture2D;
                     }
                     return _LookAtConstraintIcon;
 
                 case "parent constraint":
                     if (_ParentConstraintIcon == null)
                     {
-                        _ParentConstraintIcon = EditorGUIUtility.IconContent("d_ParentConstraint Icon").image as Texture2D;
+                        _ParentConstraintIcon = EditorGUIUtility.IconContent("ParentConstraint Icon").image as Texture2D;
                     }
                     return _ParentConstraintIcon;
 
                 case "position constraint":
                     if (_PositionConstraintIcon == null)
                     {
-                        _PositionConstraintIcon = EditorGUIUtility.IconContent("d_PositionConstraint Icon").image as Texture2D;
+                        _PositionConstraintIcon = EditorGUIUtility.IconContent("PositionConstraint Icon").image as Texture2D;
                     }
                     return _PositionConstraintIcon;
 
                 case "rotation constraint":
                     if (_RotationConstraintIcon == null)
                     {
-                        _RotationConstraintIcon = EditorGUIUtility.IconContent("d_RotationConstraint Icon").image as Texture2D;
+                        _RotationConstraintIcon = EditorGUIUtility.IconContent("RotationConstraint Icon").image as Texture2D;
                     }
                     return _RotationConstraintIcon;
 
                 case "scale constraint":
                     if (_ScaleConstraintIcon == null)
                     {
-                        _ScaleConstraintIcon = EditorGUIUtility.IconContent("d_ScaleConstraint Icon").image as Texture2D;
+                        _ScaleConstraintIcon = EditorGUIUtility.IconContent("ScaleConstraint Icon").image as Texture2D;
                     }
                     return _ScaleConstraintIcon;
 
@@ -436,7 +468,42 @@ namespace SablesTools.AvatarCopier
                         _VRCHeadChopIcon = EditorGUIUtility.IconContent("HeadZoomSilhouette").image as Texture2D;
                     }
                     return _VRCHeadChopIcon;
-                    
+
+                case "vrc look at constraint":
+                    if (_VRCLookAtConstraintIcon == null)
+                    {
+                        _VRCLookAtConstraintIcon = EditorGUIUtility.IconContent("d_LookAtConstraint Icon").image as Texture2D;
+                    }
+                    return _VRCLookAtConstraintIcon;
+
+                case "vrc parent constraint":
+                    if (_VRCParentConstraintIcon == null)
+                    {
+                        _VRCParentConstraintIcon = EditorGUIUtility.IconContent("d_ParentConstraint Icon").image as Texture2D;
+                    }
+                    return _VRCParentConstraintIcon;
+
+                case "vrc position constraint":
+                    if (_VRCPositionConstraintIcon == null)
+                    {
+                        _VRCPositionConstraintIcon = EditorGUIUtility.IconContent("d_PositionConstraint Icon").image as Texture2D;
+                    }
+                    return _VRCPositionConstraintIcon;
+
+                case "vrc rotation constraint":
+                    if (_VRCRotationConstraintIcon == null)
+                    {
+                        _VRCRotationConstraintIcon = EditorGUIUtility.IconContent("d_RotationConstraint Icon").image as Texture2D;
+                    }
+                    return _VRCRotationConstraintIcon;
+
+                case "vrc scale constraint":
+                    if (_VRCScaleConstraintIcon == null)
+                    {
+                        _VRCScaleConstraintIcon = EditorGUIUtility.IconContent("d_ScaleConstraint Icon").image as Texture2D;
+                    }
+                    return _VRCScaleConstraintIcon;
+
             }
             return null;
         }

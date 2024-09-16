@@ -77,6 +77,10 @@ namespace SablesTools.AvatarCopier
             {
                 CopyParticleParameters(compOp);
             }
+            else if (typeof(VRC.Dynamics.VRCConstraintBase).IsAssignableFrom(compOp.ComponentType))
+            {
+                CopyVRCConstraintParameters(compOp);
+            }
         }
 
         protected static void ShowRegisterablePropertiesAndFields(System.Type inType)
@@ -348,6 +352,18 @@ namespace SablesTools.AvatarCopier
                     aimConstraint.worldUpObject = GetSingleComponentRef(compOp, "worldUpObject") as Transform;
                 }
             }
+
+            // Look At Constraint
+            if (compOp.ComponentType == typeof(UnityEngine.Animations.LookAtConstraint))
+            {
+                UnityEngine.Animations.LookAtConstraint lookAtConstraint = compOp.RunTimeComponent as UnityEngine.Animations.LookAtConstraint;
+
+                // worldUpObject
+                if (!PreservedPropertyHandler.GetInstance().GetIsPropertyPreserved(compOp.ComponentType, "worldUpObject"))
+                {
+                    lookAtConstraint.worldUpObject = GetSingleComponentRef(compOp, "worldUpObject") as Transform;
+                }
+            }
         }
 
         static void CopyParticleParameters(ComponentOperation compOp)
@@ -414,6 +430,43 @@ namespace SablesTools.AvatarCopier
                 }
             }*/
         }
+
+        static void CopyVRCConstraintParameters(ComponentOperation compOp)
+        {
+            VRC.Dynamics.VRCConstraintBase destinationConstraint = compOp.RunTimeComponent as VRC.Dynamics.VRCConstraintBase;
+
+            // sourceTransform
+            if (!PreservedPropertyHandler.GetInstance().GetIsPropertyPreserved(compOp.ComponentType, "sourceTransform"))
+            {
+                for (int i = 0; i < destinationConstraint.Sources.Count; i++)
+                {
+                    float cachedWeight = destinationConstraint.Sources[i].Weight;
+                    VRC.Dynamics.VRCConstraintSource newConstraintSource = new VRC.Dynamics.VRCConstraintSource();
+                    newConstraintSource.Weight = cachedWeight;
+                    newConstraintSource.SourceTransform = GetSingleComponentRef(compOp, "sourceTransform", i) as Transform;
+
+                    destinationConstraint.Sources[i] = newConstraintSource;
+                }
+            }
+
+            // targetTransform
+            if (!PreservedPropertyHandler.GetInstance().GetIsPropertyPreserved(compOp.ComponentType, "worldUpObject"))
+            {
+                destinationConstraint.TargetTransform = GetSingleComponentRef(compOp, "targetTransform") as Transform;
+            }
+
+            // worldUpTransform
+            if (typeof(VRC.Dynamics.ManagedTypes.VRCWorldUpConstraintBase).IsAssignableFrom(compOp.ComponentType))
+            {
+                VRC.Dynamics.ManagedTypes.VRCWorldUpConstraintBase worldUpConstraint = destinationConstraint as VRC.Dynamics.ManagedTypes.VRCWorldUpConstraintBase; // Shouldn't ever be null
+
+                if (!PreservedPropertyHandler.GetInstance().GetIsPropertyPreserved(compOp.ComponentType, "worldUpObject"))
+                {
+                    worldUpConstraint.WorldUpTransform = GetSingleComponentRef(compOp, "worldUpObject") as Transform;
+                }
+            }
+        }
+
     }
 }
 #endif
