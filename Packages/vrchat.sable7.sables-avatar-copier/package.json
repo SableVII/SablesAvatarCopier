@@ -1,7 +1,7 @@
 {
   "name": "vrchat.sable7.sables-avatar-copier",
   "displayName": "Sable's Avatar Copier",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "author": {
     "name": "Sable7",
     "email": "sableseven@hotmail.com",
@@ -10,8 +10,8 @@
   "unity": "2022.3",
   "description": "Sable's Copier! Copy an avatar and all its components and attachables to another avatar with ease!",
   "type": "tool",
-  "vrchatVersion": "2022.1.1",
+  "vrchatVersion": "2022.2.1",
   "dependencies": {
-    "com.vrchat.avatars": "3.5.2"
+    "com.vrchat.avatars": "3.7.0"
   }
 }

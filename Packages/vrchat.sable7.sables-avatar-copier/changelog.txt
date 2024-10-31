@@ -1,8 +1,11 @@
 Changelog:
 
+0.1.8
+	- Fixed VRC Constraints having their Sources delete themselves after copying
+
 0.1.7
 	+ Added VRC Constraint components support
-	- Fixed unnoticed potential issue where Unity Look At Constraints would not have its World Up Transfrom copied over
+	- Fixed unnoticed potential issue where Unity Look At Constraints would not have its World Up Transform copied over
 
 0.1.6
 	+ Added VRC Head Chop component support (Finally this component exists!!)

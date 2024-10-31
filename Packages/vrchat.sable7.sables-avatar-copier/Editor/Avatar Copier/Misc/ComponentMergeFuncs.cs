@@ -434,28 +434,29 @@ namespace SablesTools.AvatarCopier
         static void CopyVRCConstraintParameters(ComponentOperation compOp)
         {
             VRC.Dynamics.VRCConstraintBase destinationConstraint = compOp.RunTimeComponent as VRC.Dynamics.VRCConstraintBase;
+            VRC.Dynamics.VRCConstraintBase sourceConstraint = compOp.OriginComponent as VRC.Dynamics.VRCConstraintBase;
 
-            // sourceTransform
-            if (!PreservedPropertyHandler.GetInstance().GetIsPropertyPreserved(compOp.ComponentType, "sourceTransform"))
+            for (int i = 0; i < sourceConstraint.Sources.Count; i++)
             {
-                for (int i = 0; i < destinationConstraint.Sources.Count; i++)
-                {
-                    float cachedWeight = destinationConstraint.Sources[i].Weight;
-                    VRC.Dynamics.VRCConstraintSource newConstraintSource = new VRC.Dynamics.VRCConstraintSource();
-                    newConstraintSource.Weight = cachedWeight;
-                    newConstraintSource.SourceTransform = GetSingleComponentRef(compOp, "sourceTransform", i) as Transform;
+                VRC.Dynamics.VRCConstraintSource sourceConstraintSource = sourceConstraint.Sources[i];
+                VRC.Dynamics.VRCConstraintSource newConstraintSource = destinationConstraint.Sources[i];
 
-                    destinationConstraint.Sources[i] = newConstraintSource;
+                // Source Transform
+                if (!PreservedPropertyHandler.GetInstance().GetIsPropertyPreserved(compOp.ComponentType, "sourceTransform"))
+                {
+                    newConstraintSource.SourceTransform = GetSingleComponentRef(compOp, "sourceTransform", i) as Transform;
                 }
+
+                newConstraintSource.Weight = sourceConstraintSource.Weight;
             }
 
-            // targetTransform
+            // TargetTransform
             if (!PreservedPropertyHandler.GetInstance().GetIsPropertyPreserved(compOp.ComponentType, "worldUpObject"))
             {
                 destinationConstraint.TargetTransform = GetSingleComponentRef(compOp, "targetTransform") as Transform;
             }
 
-            // worldUpTransform
+            // WorldUpTransform
             if (typeof(VRC.Dynamics.ManagedTypes.VRCWorldUpConstraintBase).IsAssignableFrom(compOp.ComponentType))
             {
                 VRC.Dynamics.ManagedTypes.VRCWorldUpConstraintBase worldUpConstraint = destinationConstraint as VRC.Dynamics.ManagedTypes.VRCWorldUpConstraintBase; // Shouldn't ever be null
@@ -466,7 +467,6 @@ namespace SablesTools.AvatarCopier
                 }
             }
         }
-
     }
 }
 #endif
