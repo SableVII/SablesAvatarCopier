@@ -448,6 +448,8 @@ namespace SablesTools.AvatarCopier
                 }
 
                 newConstraintSource.Weight = sourceConstraintSource.Weight;
+
+                destinationConstraint.Sources[i] = newConstraintSource;
             }
 
             // TargetTransform

@@ -1,4 +1,6 @@
 Changelog:
+0.1.9
+	- Woops, actually provided a hopefully final fix to the VRC Constraints and their source copying issues
 
 0.1.8
 	- Fixed VRC Constraints having their Sources delete themselves after copying
