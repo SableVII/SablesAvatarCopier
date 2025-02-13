@@ -33,6 +33,7 @@ However, if you added the Cookie to the hierarchy inside of Blender and imported
 
 ## Known Issues
 - Various minor UX and UI Issues.
+- Need support for VRC_SpacialAudioEditor and VRCPlayerStationEditor components
 - A host of testing still required to squash very specific issues.
 - Lack of Joint and Rigid Body support. (coming soon!)
 - Lack of any information in the 'Help' tab category.
